@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Budget App</string>
+    <string name="welcome">Welcome To</string>
+    <string name="qash">Qash</string>
+    <string name="descreption_main"> Your go-to app to manage your money \nsimple. Track expenses, set budgets,\n and monitor your financial progress in\n real-time. Stay organized, save more,\n and reach your financial goals with\n ease!</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
+    <string name="welcome_2">Welcome</string>
+    <string name="back">Back !</string>
+    <string name="desc2">Fast, secure way to manage your money</string>
+    <string name="email">Email</string>
+    <string name="pass">passowrd</string>
+    <string name="forget">Forget Passowrd?</string>
+    <string name="dont_have_acc">Don’t own an account? </string>
+    <string name="or">or</string>
+    <string name="creat_acc">Create a\nNew Account</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="confirm_pass">Confirm Passowrd</string>
+    <string name="have_acc">Already have an account? ? </string>
+
+
+
+</resources>
