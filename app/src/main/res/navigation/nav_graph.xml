@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nav_graph"
+        app:startDestination="@id/loadingFragment">
+    <fragment
+            android:id="@+id/loadingFragment"
+            android:name="com.depi.budgetapp.LoadingFragment"
+            android:label="fragment_loading"
+            tools:layout="@layout/fragment_loading" >
+        <action
+                android:id="@+id/action_loadingFragment_to_mainFragment"
+                app:destination="@id/mainFragment"
+                app:popUpTo="@id/nav_graph" />
+    </fragment>
+    <fragment
+            android:id="@+id/mainFragment"
+            android:name="com.depi.budgetapp.MainFragment"
+            android:label="fragment_main"
+            tools:layout="@layout/fragment_main" >
+        <action
+                android:id="@+id/action_mainFragment_to_loginFragment"
+                app:destination="@id/loginFragment"
+                app:popUpTo="@id/mainFragment" />
+        <action
+                android:id="@+id/action_mainFragment_to_sigupFragment"
+                app:destination="@id/sigupFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/loginFragment"
+            android:name="com.depi.budgetapp.LoginFragment"
+            android:label="fragment_login"
+            tools:layout="@layout/fragment_login" >
+        <action
+                android:id="@+id/action_loginFragment_to_sigupFragment"
+                app:destination="@id/sigupFragment"
+                app:popUpTo="@id/mainFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/sigupFragment"
+            android:name="com.depi.budgetapp.SigupFragment"
+            android:label="fragment_sigup"
+            tools:layout="@layout/fragment_sigup" >
+        <action
+                android:id="@+id/action_sigupFragment_to_loginFragment"
+                app:destination="@id/loginFragment"
+                app:popUpTo="@id/mainFragment" />
+    </fragment>
+</navigation>
