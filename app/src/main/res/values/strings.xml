@@ -9,16 +9,15 @@
     <string name="back">Back !</string>
     <string name="desc2">Fast, secure way to manage your money</string>
     <string name="email">Email</string>
-    <string name="pass">passowrd</string>
-    <string name="forget">Forget Passowrd?</string>
+    <string name="pass">password</string>
+    <string name="forget">Forget Password?</string>
     <string name="dont_have_acc">Don’t own an account? </string>
     <string name="or">or</string>
     <string name="creat_acc">Create a\nNew Account</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
-    <string name="confirm_pass">Confirm Passowrd</string>
+    <string name="confirm_pass">Confirm Password</string>
     <string name="have_acc">Already have an account? ? </string>
-
 
 
 </resources>
