@@ -1,4 +1,4 @@
-package com.depi.budgetapp
+package com.depi.budgetapp.ui
 
 import android.os.Bundle
 import android.os.Handler
@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.depi.budgetapp.R
 import com.depi.budgetapp.databinding.FragmentLoadingBinding
 
 
