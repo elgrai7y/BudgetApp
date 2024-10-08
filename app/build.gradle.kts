@@ -45,14 +45,15 @@ android {
 
 dependencies {
 
-    //navigation component dependency
+   //navigation component dependency
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.2")
     implementation("androidx.navigation:navigation-ui-ktx:2.8.2")
 
     //firebase dependency
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation ("com.google.firebase:firebase-auth-ktx")
-//    implementation("com.google.android.gms:play-services-auth")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+
     implementation("com.google.firebase:firebase-analytics")
 
 

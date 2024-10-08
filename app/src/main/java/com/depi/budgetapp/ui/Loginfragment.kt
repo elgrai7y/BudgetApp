@@ -1,26 +1,34 @@
 package com.depi.budgetapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.depi.budgetapp.R
 import com.depi.budgetapp.databinding.FragmentLoginBinding
 import com.depi.budgetapp.repo.AuthRepository
-import com.depi.budgetapp.util.isValidEmail
-import com.depi.budgetapp.util.isValidPassword
 import com.depi.budgetapp.viewmodels.AuthViewModel
 import com.depi.budgetapp.viewmodels.AuthViewModelFactory
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseUser
 
 class LoginFragment : Fragment() {
     private lateinit var authRepository: AuthRepository
+
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
 
 //    private lateinit var authViewModel: AuthViewModel
     private val authViewModel: AuthViewModel by viewModels {
@@ -46,7 +54,8 @@ class LoginFragment : Fragment() {
 
         authRepository = AuthRepository()
         // Initialize the ViewModel
-
+        // Step 1: Setup Google Sign-In
+        setupGoogleSignIn()
 
 
         // Set click listener for the back imageView to make onBackPress
@@ -66,7 +75,18 @@ class LoginFragment : Fragment() {
             login(email,password)
         })
 
+        binding.googleImageV.setOnClickListener(View.OnClickListener {
+            signInWithGoogle()
+        })
+
         observeAuthViewModel()
+
+        // Initialize the launcher for Google Sign-In
+        googleSignInLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                handleSignInResult(task)
+            }
     }
 
     private fun observeAuthViewModel() {
@@ -98,6 +118,48 @@ class LoginFragment : Fragment() {
         authViewModel.login(email, password)
     }
 
+
+    // Step 4: Set up Google Sign-In
+    private fun setupGoogleSignIn() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.client_id)) // Request the ID token
+            .requestEmail() // Request email for the sign-in
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+    }
+
+    // Step 5: Trigger Google Sign-In flow
+    private fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        googleSignInLauncher.launch(signInIntent)
+    }
+
+    // Step 6: Handle Google Sign-In result and retrieve the idToken
+    private fun handleSignInResult(task: Task<GoogleSignInAccount>) {
+        try {
+            val account = task.getResult(Exception::class.java)
+            val idToken = account?.idToken
+            if (idToken != null) {
+                // Pass the idToken to the ViewModel for Firebase authentication
+                authViewModel.signInWithGoogle(idToken)
+            }
+        } catch (e: Exception) {
+            Toast.makeText(
+                requireActivity(),
+                "Google Sign-In failed: ${e.localizedMessage}",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    // Step 7: Handle successful sign-in
+    private fun handleSignInSuccess(user: FirebaseUser?) {
+        user?.let {
+            Toast.makeText(requireActivity(), "Welcome ${user.displayName}", Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
 
 
 }
