@@ -64,5 +64,4 @@ class AuthRepository {
         return firebaseAuth.currentUser != null
     }
 
-
 }
