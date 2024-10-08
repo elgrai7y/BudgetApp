@@ -18,6 +18,8 @@
     <string name="last_name">Last Name</string>
     <string name="confirm_pass">Confirm Password</string>
     <string name="have_acc">Already have an account? ? </string>
+<!--    strings for firebase google acount authentication-->
+    <string name="client_id">978894423686-052nar98ue3v1n1s0578vla5nscn66dl.apps.googleusercontent.com</string>
 
 
 </resources>
