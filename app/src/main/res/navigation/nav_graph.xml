@@ -6,7 +6,7 @@
         app:startDestination="@id/loadingFragment">
     <fragment
             android:id="@+id/loadingFragment"
-            android:name="com.depi.budgetapp.LoadingFragment"
+            android:name="com.depi.budgetapp.ui.LoadingFragment"
             android:label="fragment_loading"
             tools:layout="@layout/fragment_loading" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
             android:id="@+id/mainFragment"
-            android:name="com.depi.budgetapp.MainFragment"
+            android:name="com.depi.budgetapp.ui.MainFragment"
             android:label="fragment_main"
             tools:layout="@layout/fragment_main" >
         <action
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
             android:id="@+id/loginFragment"
-            android:name="com.depi.budgetapp.LoginFragment"
+            android:name="com.depi.budgetapp.ui.LoginFragment"
             android:label="fragment_login"
             tools:layout="@layout/fragment_login" >
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
             android:id="@+id/sigupFragment"
-            android:name="com.depi.budgetapp.SigupFragment"
+            android:name="com.depi.budgetapp.ui.SigupFragment"
             android:label="fragment_sigup"
             tools:layout="@layout/fragment_sigup" >
         <action

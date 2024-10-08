@@ -1,4 +1,4 @@
-package com.depi.budgetapp
+package com.depi.budgetapp.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import com.depi.budgetapp.R
 
 
 class BaseActivity : AppCompatActivity() {

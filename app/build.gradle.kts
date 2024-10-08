@@ -1,4 +1,5 @@
 plugins {
+
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
@@ -51,6 +52,7 @@ dependencies {
     //firebase dependency
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation ("com.google.firebase:firebase-auth-ktx")
+//    implementation("com.google.android.gms:play-services-auth")
     implementation("com.google.firebase:firebase-analytics")
 
 
