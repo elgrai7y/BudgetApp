@@ -45,7 +45,7 @@ android {
 
 dependencies {
 
-    //navigation component dependency
+   //navigation component dependency
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.2")
     implementation("androidx.navigation:navigation-ui-ktx:2.8.2")
 
