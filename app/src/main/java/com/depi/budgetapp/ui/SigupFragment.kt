@@ -38,7 +38,7 @@ class SigupFragment : Fragment() {
         binding = FragmentSigupBinding.inflate(inflater, container, false)
 
 
-
+        // init view
         return binding.root
     }
 
