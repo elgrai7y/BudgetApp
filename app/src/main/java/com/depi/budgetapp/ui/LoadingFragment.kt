@@ -25,7 +25,7 @@ class LoadingFragment : Fragment() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             findNavController().navigate(R.id.action_loadingFragment_to_mainFragment)
-        },2000)
+        }, 2000)
 
         binding = FragmentLoadingBinding.inflate(inflater, container, false)
 
@@ -34,12 +34,6 @@ class LoadingFragment : Fragment() {
         return binding.root
     }
 
-//    fun runHandler() {
-//        Handler().postDelayed({
-//            val intent = Intent(this, MainActivity::class.java)
-//            startActivity(intent)
-//
-//        }, 2000)
-    }
+}
 
 

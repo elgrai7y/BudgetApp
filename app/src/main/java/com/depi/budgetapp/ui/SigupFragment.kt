@@ -47,6 +47,7 @@ class SigupFragment : Fragment() {
 
         authRepository = AuthRepository()
 
+
         // Handle the back button click event
         binding.backBtn.setOnClickListener(View.OnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -61,7 +62,11 @@ class SigupFragment : Fragment() {
             val email = binding.emailEt.text.toString()
             val password = binding.passEt.text.toString()
             val confirmPassword = binding.confirmPassEt.text.toString()
-            register(email,password, confirmPassword)
+            register(email, password, confirmPassword)
+
+        })
+
+        binding.googleImageV.setOnClickListener(View.OnClickListener {
 
         })
 
@@ -87,18 +92,23 @@ class SigupFragment : Fragment() {
 
     private fun handleError(exception: Throwable) {
         // Show error message
-        Toast.makeText(requireActivity() , exception.message, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireActivity(), exception.message, Toast.LENGTH_LONG).show()
     }
+
     private fun register(email: String, password: String, confirmPassword: String) {
-        if (!isValidEmail(email)){
+        if (!isValidEmail(email)) {
             Toast.makeText(requireActivity(), "not valid Email form", Toast.LENGTH_SHORT).show()
             return
         }
-        if (!isValidPassword(password)){
-            Toast.makeText(requireActivity(), "not valid password(6 chars include 1 letter and 1 digit)", Toast.LENGTH_SHORT).show()
+        if (!isValidPassword(password)) {
+            Toast.makeText(
+                requireActivity(),
+                "not valid password(6 chars include 1 letter and 1 digit)",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
-        if (!arePasswordsEqual(password, confirmPassword)){
+        if (!arePasswordsEqual(password, confirmPassword)) {
             Toast.makeText(requireActivity(), "Passwords do not match", Toast.LENGTH_SHORT).show()
             return
         }
@@ -106,5 +116,6 @@ class SigupFragment : Fragment() {
 
         authViewModel.register(email, password)
     }
+
 
 }
