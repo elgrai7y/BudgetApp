@@ -7,7 +7,7 @@ import kotlinx.coroutines.tasks.await
 
 class AuthRepository {
 
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
 
     fun signInWithEmailAndPassword(
@@ -16,10 +16,10 @@ class AuthRepository {
         callback: (Result<FirebaseUser?>) -> Unit
     ) {
 
-        auth.signInWithEmailAndPassword(email, password)
+        firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    callback(Result.success(auth.currentUser))
+                    callback(Result.success(firebaseAuth.currentUser))
                 } else {
                     callback(Result.failure(task.exception ?: Exception("Authentication failed")))
                 }
@@ -31,9 +31,9 @@ class AuthRepository {
         password: String,
         callback: (Result<FirebaseUser?>) -> Unit
     ) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                callback(Result.success(auth.currentUser))
+                callback(Result.success(firebaseAuth.currentUser))
             } else {
                 callback(Result.failure(task.exception ?: Exception("Authentication failed")))
             }
@@ -43,7 +43,7 @@ class AuthRepository {
     suspend fun signInWithGoogle(idToken: String): Result<FirebaseUser?> {
         return try {
             val credential = GoogleAuthProvider.getCredential(idToken, null)
-            val authResult = auth.signInWithCredential(credential).await()
+            val authResult = firebaseAuth.signInWithCredential(credential).await()
             Result.success(authResult.user)
         } catch (e: Exception) {
             Result.failure(e)
@@ -51,17 +51,17 @@ class AuthRepository {
     }
 
     fun signOut() {
-        auth.signOut()
+        firebaseAuth.signOut()
     }
 
     fun getCurrentUser(): FirebaseUser? {
-        return auth.currentUser
+        return firebaseAuth.currentUser
     }
 
 
     // Function to check if user is logged in
     fun isUserLoggedIn(): Boolean {
-        return auth.currentUser != null
+        return firebaseAuth.currentUser != null
     }
 
 
