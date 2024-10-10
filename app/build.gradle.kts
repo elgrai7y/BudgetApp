@@ -55,6 +55,19 @@ dependencies {
 //    implementation("com.google.android.gms:play-services-auth")
     implementation("com.google.firebase:firebase-analytics")
 
+    implementation( "androidx.room:room-runtime:2.5.0")
+
+    // For Kotlin use kapt instead of annotationProcessor
+
+    // optional - RxJava2 support for Room
+    implementation ("androidx.room:room-rxjava2:2.5.0")
+
+    // optional - Guava support for Room, including Optional and ListenableFuture
+    implementation( "androidx.room:room-guava:2.5.0")
+
+    // Test helpers
+    testImplementation ("androidx.room:room-testing:2.5.0")
+
 
 
     implementation("androidx.core:core-ktx:1.13.1")

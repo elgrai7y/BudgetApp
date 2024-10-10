@@ -36,8 +36,6 @@ class LoginFragment : Fragment() {
     ): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
 
-
-
         return binding.root
     }
 
@@ -92,10 +90,13 @@ class LoginFragment : Fragment() {
     // Call these methods to login or register
     private fun login(email: String, password: String) {
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+
             Toast.makeText(requireActivity(), "Please insert your email and password", Toast.LENGTH_SHORT).show()
             return
         }
         authViewModel.login(email, password)
+        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+
     }
 
 

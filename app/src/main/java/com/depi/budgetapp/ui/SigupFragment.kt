@@ -105,6 +105,8 @@ class SigupFragment : Fragment() {
 
 
         authViewModel.register(email, password)
+        findNavController().navigate(R.id.action_sigupFragment_to_newWalletFragment)
+
     }
 
 }
