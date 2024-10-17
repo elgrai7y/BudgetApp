@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">Budget App</string>
+    <string name="welcome">Welcome To</string>
+    <string name="qash">Qash</string>
+    <string name="descreption_main"> Your go-to app to manage your money \nsimple. Track expenses, set budgets,\n and monitor your financial progress in\n real-time. Stay organized, save more,\n and reach your financial goals with\n ease!</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
+    <string name="welcome_2">Welcome</string>
+    <string name="back">Back !</string>
+    <string name="desc2">Fast, secure way to manage your money</string>
+    <string name="email">Email</string>
+    <string name="pass">password</string>
+    <string name="forget">Forget Password?</string>
+    <string name="dont_have_acc">Don’t own an account? </string>
+    <string name="or">or</string>
+    <string name="creat_acc">Create a\nNew Account</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="confirm_pass">Confirm Password</string>
+<<<<<<< HEAD
+    <string name="have_acc">Already have an account?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="new_wallet">Set A New</string>
+    <string name="wallet">wallet</string>
+    <string name="Walet_Name">Wallet Name</string>
+    <string name="wallet_balance">Balance</string>
+    <string name="add">Add</string>
+=======
+    <string name="have_acc">Already have an account? ? </string>
+    <!--    strings for firebase google acount authentication-->
+    <string name="client_id">978894423686-052nar98ue3v1n1s0578vla5nscn66dl.apps.googleusercontent.com</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+>>>>>>> sub_branch
+
+    <!-- to toggle the open close button of the navigation drawer -->
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+
+    <string name="new_wallet">Set A New</string>
+    <string name="wallet">wallet</string>
+    <string name="Walet_Name">Wallet Name</string>
+    <string name="wallet_balance">Balance</string>
+    <string name="add">Add</string>
+    <string name="home">Home</string>
+    <string name="balance">Balance</string>
+    <string name="profile">Profile</string>
+    <string name="hello">Hello,</string>
+    <string name="curr_wallet">Current Wallet,</string>
+    <string name="income_num">Icome\nTransactions</string>
+    <string name="expense_num">Expense\nTransactions</string>
+
+
+    <string name="Received">Received</string>
+    <string name="Profit">Profit</string>
+    <string name="info">More info ></string>
+
+
+    <string name="selected_date_format">%d/%d/%d</string>
+
+    <string name="change">Click To Change</string>
+    <string name="category">Category</string>
+    <string name="personal">Personal CC</string>
+    <string name="edit_transaction">Edit Transaction</string>
+    <string name="all_transaction">All Transaction</string>
+    <string name="manage_Category">Manage Category</string>
+    <string name="new_transaction">New Transaction</string>
+
+</resources>

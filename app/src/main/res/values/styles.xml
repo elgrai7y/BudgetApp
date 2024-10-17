@@ -1,0 +1,23 @@
+<resources>
+    <style name="ActionButtonStyle">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+    <style name="SpinnerDatePickerDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="colorPrimary">@color/gold</item>
+        <item name="colorAccent">@color/gold</item>
+        <item name="android:background">#313131</item>
+        <item name="android:buttonStyle">@style/DatePickerButton</item>
+    </style>
+    <style name="DatePickerButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">#fff</item>
+        <item name="android:background">@drawable/outlined_button_background</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

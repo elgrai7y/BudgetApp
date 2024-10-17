@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/last_hour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gold"
+        android:textSize="20dp"
+        android:text="Last Hour"
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/last_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Last Day"
+        android:textSize="20dp"
+        android:textColor="@color/gold"
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/last_week"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Last Week"
+        android:textSize="20dp"
+        android:textColor="@color/gold"
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/last_month"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Last Month"
+        android:textSize="20dp"
+        android:textColor="@color/gold"
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/last_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Last Year"
+        android:textSize="20dp"
+        android:textColor="@color/gold"
+        android:padding="10dp" />
+</LinearLayout>

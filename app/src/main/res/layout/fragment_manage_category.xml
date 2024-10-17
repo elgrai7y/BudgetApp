@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".ui.ManageCategoryFragment">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+
+        android:id="@+id/drawable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Main content layout with Toolbar and other content -->
+
+        <!-- NavigationView for the drawer -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Toolbar at the top of the screen -->
+
+
+            <!-- Content goes here -->
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigationIcon="@drawable/menu_icon">
+
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/manage_Category"
+                    android:textColor="@color/gold"
+                    android:textSize="30sp" />
+
+                <ImageView
+                    android:id="@+id/mainLogo_2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="end|center"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/main_portrait" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+
+            <LinearLayout
+                android:id="@+id/content_frame"
+                android:layout_width="369dp"
+                android:layout_height="602dp"
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:gravity="center_horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="MissingConstraints">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-4dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <!-- Income Button -->
+                    <Button
+                        android:id="@+id/edit_income_button"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#5729662C"
+                        android:padding="10dp"
+                        android:text="Income"
+                        android:textColor="#6FFF74"
+                        android:textSize="23sp" />
+
+                    <!-- Expense Button -->
+                    <Button
+                        android:id="@+id/edit_expense_button"
+                        android:layout_width="170dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:backgroundTint="#4DAB3A3A"
+                        android:padding="10dp"
+                        android:text="Expense"
+                        android:textColor="#FDA09A"
+                        android:textSize="23sp" />
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/create_btn"
+                    android:layout_width="345dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/rounded_button_background"
+                    android:text="Add Category"
+                    android:textColor="#000"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                app:itemIconTint="@color/nav_item_color"
+                app:itemTextColor="@color/nav_item_color"
+                app:labelVisibilityMode="labeled"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/content_frame"
+                app:layout_constraintVertical_bias="1.0"
+                app:menu="@menu/bottom_menu" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            android:background="@color/black"
+            app:itemTextAppearance="@style/CustomNavViewStyle"
+            app:itemIconTint="@color/black"
+            app:headerLayout="@layout/fragment_header"
+            />
+
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

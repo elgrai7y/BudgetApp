@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/nav_graph"
+        app:startDestination="@id/loadingFragment">
+    <fragment
+            android:id="@+id/loadingFragment"
+            android:name="com.depi.budgetapp.ui.LoadingFragment"
+            android:label="fragment_loading"
+            tools:layout="@layout/fragment_loading" >
+        <action
+                android:id="@+id/action_loadingFragment_to_mainFragment"
+                app:destination="@id/mainFragment"
+                app:popUpTo="@id/nav_graph" />
+    </fragment>
+    <fragment
+            android:id="@+id/mainFragment"
+            android:name="com.depi.budgetapp.ui.MainFragment"
+            android:label="fragment_main"
+            tools:layout="@layout/fragment_main" >
+        <action
+                android:id="@+id/action_mainFragment_to_loginFragment"
+                app:destination="@id/loginFragment"
+                app:popUpTo="@id/mainFragment" />
+        <action
+                android:id="@+id/action_mainFragment_to_sigupFragment"
+                app:destination="@id/sigupFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/loginFragment"
+            android:name="com.depi.budgetapp.ui.LoginFragment"
+            android:label="fragment_login"
+            tools:layout="@layout/fragment_login" >
+        <action
+                android:id="@+id/action_loginFragment_to_sigupFragment"
+                app:destination="@id/sigupFragment"
+                app:popUpTo="@id/mainFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/sigupFragment"
+            android:name="com.depi.budgetapp.ui.SigupFragment"
+            android:label="fragment_sigup"
+            tools:layout="@layout/fragment_sigup" >
+        <action
+                android:id="@+id/action_sigupFragment_to_loginFragment"
+                app:destination="@id/loginFragment"
+                app:popUpTo="@id/mainFragment" />
+        <action
+<<<<<<< HEAD
+            android:id="@+id/action_sigupFragment_to_newWalletFragment3"
+            app:destination="@id/newWalletFragment3" />
+    </fragment>
+    <fragment
+        android:id="@+id/newWalletFragment3"
+        android:name="com.depi.budgetapp.NewWalletFragment"
+        android:label="fragment_new_wallet"
+        tools:layout="@layout/fragment_new_wallet" />
+=======
+            android:id="@+id/action_sigupFragment_to_newWalletFragment"
+            app:destination="@id/newWalletFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newWalletFragment"
+        android:name="com.depi.budgetapp.NewWalletFragment"
+        android:label="fragment_new_wallet"
+        tools:layout="@layout/fragment_new_wallet" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.depi.budgetapp.ui.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.depi.budgetapp.ui.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/headerFragment2"
+        android:name="com.depi.budgetapp.ui.HeaderFragment"
+        android:label="fragment_header"
+        tools:layout="@layout/fragment_header" >
+        <action
+            android:id="@+id/action_headerFragment2_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_headerFragment2_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addCategoryFragment"
+        android:name="com.depi.budgetapp.ui.AddCategoryFragment"
+        android:label="fragment_add_category"
+        tools:layout="@layout/fragment_add_category" >
+        <action
+            android:id="@+id/action_addCategoryFragment_to_manageCategoryFragment"
+            app:destination="@id/manageCategoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addTransactionFragment"
+        android:name="com.depi.budgetapp.ui.AddTransactionFragment"
+        android:label="fragment_add_transaction"
+        tools:layout="@layout/fragment_add_transaction" />
+    <fragment
+        android:id="@+id/manageCategoryFragment"
+        android:name="com.depi.budgetapp.ui.ManageCategoryFragment"
+        android:label="fragment_manage_category"
+        tools:layout="@layout/fragment_manage_category" >
+        <action
+            android:id="@+id/action_manageCategoryFragment_to_addCategoryFragment"
+            app:destination="@id/addCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allTransactionFragment2"
+        android:name="com.depi.budgetapp.ui.AllTransactionFragment"
+        android:label="fragment_all_transaction2"
+        tools:layout="@layout/fragment_all_transaction2" />
+>>>>>>> sub_branch
+</navigation>
