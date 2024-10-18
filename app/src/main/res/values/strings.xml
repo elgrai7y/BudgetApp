@@ -17,22 +17,13 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="confirm_pass">Confirm Password</string>
-<<<<<<< HEAD
     <string name="have_acc">Already have an account?</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="new_wallet">Set A New</string>
-    <string name="wallet">wallet</string>
-    <string name="Walet_Name">Wallet Name</string>
-    <string name="wallet_balance">Balance</string>
-    <string name="add">Add</string>
 =======
-    <string name="have_acc">Already have an account? ? </string>
     <!--    strings for firebase google acount authentication-->
     <string name="client_id">978894423686-052nar98ue3v1n1s0578vla5nscn66dl.apps.googleusercontent.com</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 >>>>>>> sub_branch
 
     <!-- to toggle the open close button of the navigation drawer -->

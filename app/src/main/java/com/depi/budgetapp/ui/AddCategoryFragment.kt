@@ -27,6 +27,9 @@ class AddCategoryFragment : Fragment() {
         binding = FragmentAddCategoryBinding.inflate(inflater, container, false)
 
 
+        binding.backBtn.setOnClickListener(View.OnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        })
 
         return binding.root
     }

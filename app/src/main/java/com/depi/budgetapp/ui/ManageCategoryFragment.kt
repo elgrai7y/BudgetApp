@@ -5,25 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.depi.budgetapp.R
 import com.depi.budgetapp.databinding.FragmentAddCategoryBinding
 import com.depi.budgetapp.databinding.FragmentAddTransactionBinding
 import com.depi.budgetapp.databinding.FragmentManageCategoryBinding
+import com.google.android.material.navigation.NavigationView
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ManageCategoryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ManageCategoryFragment : Fragment() {
     private lateinit var binding:FragmentManageCategoryBinding
+
+    private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,30 +32,71 @@ class ManageCategoryFragment : Fragment() {
        binding.createBtn.setOnClickListener(View.OnClickListener {
            findNavController().navigate(R.id.action_manageCategoryFragment_to_addCategoryFragment)
 
-
        })
+        binding.bottomNavigation.setupWithNavController( findNavController())
 
 
+
+        binding.toolbar.setNavigationOnClickListener {
+            if (binding.drawable.isDrawerOpen(GravityCompat.START)) {
+                binding.drawable.closeDrawer(GravityCompat.START)
+            } else {
+                binding.drawable.openDrawer(GravityCompat.START)
+            }
+        }
+
+
+        toggle =
+            ActionBarDrawerToggle(activity, binding.drawable, R.string.nav_open, R.string.nav_close)
+        binding.drawable.addDrawerListener(toggle)
+        toggle.syncState()
+
+
+
+
+
+
+        drawerLayout = binding.drawable
+
+        val navigationView: NavigationView = binding.navView
+
+        val headerView = navigationView.getHeaderView(0)
+        val headerButton: Button = headerView.findViewById(R.id.profile_nv)
+        headerButton.setOnClickListener {
+            // Navigate to the target fragment when the button is clicked
+            findNavController().navigate(R.id.profileFragment)
+
+            // Close the navigation drawer
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+        val headerButton2: Button = headerView.findViewById(R.id.home_nv)
+        headerButton2.setOnClickListener {
+            // Navigate to the target fragment when the button is clicked
+            findNavController().navigate(R.id.homeFragment)
+
+            // Close the navigation drawer
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        val headerButton3: Button = headerView.findViewById(R.id.trans_nv)
+        headerButton3.setOnClickListener {
+            // Navigate to the target fragment when the button is clicked
+            findNavController().navigate(R.id.allTransactionFragment2)
+
+            // Close the navigation drawer
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        val headerButton4: Button = headerView.findViewById(R.id.category_nv)
+        headerButton4.setOnClickListener {
+            // Navigate to the target fragment when the button is clicked
+            findNavController().navigate(R.id.manageCategoryFragment)
+
+            // Close the navigation drawer
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
         return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ManageCategoryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ManageCategoryFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
 }

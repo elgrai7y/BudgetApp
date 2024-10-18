@@ -16,16 +16,7 @@ import com.depi.budgetapp.databinding.FragmentHomeBinding
 import com.depi.budgetapp.databinding.FragmentProfileBinding
 import com.google.android.material.navigation.NavigationView
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
@@ -38,6 +29,7 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
+
 
 
         binding.toolbar.setNavigationOnClickListener {
@@ -76,6 +68,24 @@ class ProfileFragment : Fragment() {
         headerButton2.setOnClickListener {
             // Navigate to the target fragment when the button is clicked
             findNavController().navigate(R.id.homeFragment)
+
+            // Close the navigation drawer
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        val headerButton3: Button = headerView.findViewById(R.id.trans_nv)
+        headerButton3.setOnClickListener {
+            // Navigate to the target fragment when the button is clicked
+            findNavController().navigate(R.id.allTransactionFragment2)
+
+            // Close the navigation drawer
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        val headerButton4: Button = headerView.findViewById(R.id.category_nv)
+        headerButton4.setOnClickListener {
+            // Navigate to the target fragment when the button is clicked
+            findNavController().navigate(R.id.manageCategoryFragment)
 
             // Close the navigation drawer
             drawerLayout.closeDrawer(GravityCompat.START)

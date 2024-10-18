@@ -5,6 +5,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     //plugin for firebase
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
 
 android {
@@ -56,6 +57,8 @@ dependencies {
     // Feature module support for Fragments
     implementation("androidx.navigation:navigation-dynamic-features-fragment:")
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.2")
+    implementation("androidx.core:core-i18n:1.0.0-alpha01")
+    implementation("com.google.firebase:protolite-well-known-types:18.0.0")
 
     // Testing Navigation
     androidTestImplementation("androidx.navigation:navigation-testing")
@@ -91,6 +94,11 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:")
+    kapt("androidx.room:room-compiler:2.6.1")
+
+    implementation ("androidx.room:room-runtime:2.6.1") // or latest version
+    implementation ("androidx.room:room-ktx:2.6.1") // Optional, for Kotlin extensions
 }
 
 

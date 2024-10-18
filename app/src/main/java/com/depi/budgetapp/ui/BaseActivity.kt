@@ -9,25 +9,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-<<<<<<< HEAD:app/src/main/java/com/depi/budgetapp/BaseActivity.kt
-import androidx.navigation.ui.setupWithNavController
-import com.depi.budgetapp.databinding.ActivityBaseBinding
-import com.depi.budgetapp.databinding.FragmentSigupBinding
-
-
-class BaseActivity : AppCompatActivity() {
-    lateinit var binding: ActivityBaseBinding
-=======
 import com.depi.budgetapp.R
-import com.google.android.material.navigation.NavigationView
 
 
 class BaseActivity : AppCompatActivity() {
 
->>>>>>> sub_branch:app/src/main/java/com/depi/budgetapp/ui/BaseActivity.kt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding =ActivityBaseBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(R.layout.activity_base)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -40,7 +28,8 @@ class BaseActivity : AppCompatActivity() {
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
         val navController = navHostFragment.navController
-        binding.appbar.setupWithNavController(navController)
+
+
 
 
     }
@@ -50,6 +39,7 @@ class BaseActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
+
 
 
 

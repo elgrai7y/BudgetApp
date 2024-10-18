@@ -82,7 +82,23 @@ class HomeFragment : Fragment() {
             drawerLayout.closeDrawer(GravityCompat.START)
         }
 
+        val headerButton3: Button = headerView.findViewById(R.id.trans_nv)
+        headerButton3.setOnClickListener {
+            // Navigate to the target fragment when the button is clicked
+            findNavController().navigate(R.id.allTransactionFragment2)
 
+            // Close the navigation drawer
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        val headerButton4: Button = headerView.findViewById(R.id.category_nv)
+        headerButton4.setOnClickListener {
+            // Navigate to the target fragment when the button is clicked
+            findNavController().navigate(R.id.manageCategoryFragment)
+
+            // Close the navigation drawer
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
 
 
         val lineChart = binding.lineChart  // No need to use findViewById

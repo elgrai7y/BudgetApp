@@ -5,12 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-<<<<<<< HEAD
     android:layout_gravity="center_horizontal|center_vertical"
-    tools:context=".MainFragment">
-=======
     tools:context=".ui.MainFragment">
->>>>>>> sub_branch
 
     <ScrollView
         android:layout_width="match_parent"

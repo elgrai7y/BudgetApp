@@ -50,7 +50,6 @@
                 app:destination="@id/loginFragment"
                 app:popUpTo="@id/mainFragment" />
         <action
-<<<<<<< HEAD
             android:id="@+id/action_sigupFragment_to_newWalletFragment3"
             app:destination="@id/newWalletFragment3" />
     </fragment>
@@ -59,10 +58,6 @@
         android:name="com.depi.budgetapp.NewWalletFragment"
         android:label="fragment_new_wallet"
         tools:layout="@layout/fragment_new_wallet" />
-=======
-            android:id="@+id/action_sigupFragment_to_newWalletFragment"
-            app:destination="@id/newWalletFragment" />
-    </fragment>
     <fragment
         android:id="@+id/newWalletFragment"
         android:name="com.depi.budgetapp.NewWalletFragment"
@@ -120,5 +115,4 @@
         android:name="com.depi.budgetapp.ui.AllTransactionFragment"
         android:label="fragment_all_transaction2"
         tools:layout="@layout/fragment_all_transaction2" />
->>>>>>> sub_branch
 </navigation>

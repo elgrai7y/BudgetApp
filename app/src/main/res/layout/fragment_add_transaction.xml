@@ -125,6 +125,7 @@
                         android:background="@drawable/input_style"
                         android:clickable="true"
                         android:focusable="true"
+
                         android:foreground="?attr/selectableItemBackground"
                         android:gravity="center"
                         android:orientation="vertical"
@@ -140,6 +141,7 @@
                             android:src="@drawable/category_icon" />
 
                         <TextView
+                            android:id="@+id/category_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -149,6 +151,7 @@
                             android:textSize="15sp" />
 
                         <TextView
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -251,6 +254,7 @@
 
 
                     <Button
+                        android:id="@+id/add_btn"
                         android:layout_width="345dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
