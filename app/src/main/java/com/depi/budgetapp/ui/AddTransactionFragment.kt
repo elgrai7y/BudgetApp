@@ -31,6 +31,7 @@ import com.depi.budgetapp.viewmodels.TransactionViewModel
 import com.depi.budgetapp.viewmodels.TransactionViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
+import java.text.ParseException
 import java.util.Date
 import java.util.Locale
 @AddTransactionFragment.AndroidEntryPoint
@@ -45,6 +46,7 @@ class AddTransactionFragment : Fragment() {
     private lateinit var selectedDateText: TextView
     private lateinit var balanceEditText: EditText
     private lateinit var transvm: TransactionViewModel
+    private var isincome: Boolean? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,15 +54,26 @@ class AddTransactionFragment : Fragment() {
     ): View {
         binding = FragmentAddTransactionBinding.inflate(inflater, container, false)
 
+        val clickListener = View.OnClickListener { view ->
+
+            when (view.getId()) {
+                R.id.edit_income_button -> isincome = true
+                R.id.edit_expense_button -> isincome = false
+            }
+        }
+
+
+        binding.editIncomeButton.setOnClickListener(clickListener)
+        binding.editExpenseButton.setOnClickListener(clickListener)
 
         //************************************
         val factory = TransactionViewModelFactory(requireActivity().application)
 
         transvm = ViewModelProvider(this, factory).get(TransactionViewModel::class.java)
+binding.addBtn.setOnClickListener(View.OnClickListener {
+    insertData()
+})
 
-        binding.addBtn.setOnClickListener(View.OnClickListener {
-            insertData()
-        })
         //************************************
 
         binding.bottomNavigation.setupWithNavController(findNavController())
@@ -112,32 +125,50 @@ class AddTransactionFragment : Fragment() {
             // Close the navigation drawer
             drawerLayout.closeDrawer(GravityCompat.START)
         }
-
+        insertData()
 
 
         return binding.root
     }
     //************************************
 
-    private fun insertData() {
-        val transBalance = binding.editBalanceEditText.text.toString().toDoubleOrNull()
-        val transCategory = binding.categoryName.text.toString()
-        val transDate = Date() // Replace with selected date logic
+            private fun insertData() {
+                val transBalance = binding.editBalanceEditText.text.toString().toDoubleOrNull()
+                val transCategory = binding.categoryName.text.toString()
+                val selectedDateString = binding.editSelectedDateText.text.toString()
 
-        if (transBalance != null) {
-            val transaction = Transaction(0, TransactionType.INCOME, transCategory, transBalance, transDate)
-            transvm.insert(transaction)
-            Toast.makeText(requireActivity(), "Transaction added", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(requireActivity(), "Please enter a valid balance", Toast.LENGTH_SHORT).show()
-        }
-    }
-    //************************************
+                val transDate: Date =
+                    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(selectedDateString)
 
 
 
+                if (transBalance != null && transDate != null && isincome == true) {
+                    val transaction = Transaction(
+                        0,
+                        TransactionType.INCOME,
+                        transCategory,
+                        transBalance,
+                        transDate
+                    )
+                    Toast.makeText(requireActivity(), "$transBalance", Toast.LENGTH_SHORT).show()
 
+                    transvm.insert(transaction)
+                }
+                else if(transBalance != null && transDate != null && isincome == false) {
+                    val transaction = Transaction(
+                        0,
+                        TransactionType.EXPENSE,
+                        transCategory,
+                        transBalance,
+                        transDate
+                    )
+                    Toast.makeText(requireActivity(), "$transBalance", Toast.LENGTH_SHORT).show()
 
+                    transvm.insert(transaction)
+                }
+                else Toast.makeText(requireActivity(), "complete info please", Toast.LENGTH_SHORT).show()
+
+            }
 
             override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
                 super.onViewCreated(view, savedInstanceState)

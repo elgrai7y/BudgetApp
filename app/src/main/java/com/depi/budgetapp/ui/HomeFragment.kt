@@ -13,25 +13,20 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.depi.budgetapp.R
 import com.depi.budgetapp.databinding.FragmentHomeBinding
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.navigation.NavigationView
-import android.graphics.Color
-import androidx.core.graphics.toColorInt
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.ui.setupWithNavController
-import com.depi.budgetapp.databinding.ActivityBaseBinding
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.depi.budgetapp.adapters.TransactionAdapter
+import com.depi.budgetapp.data.Transaction
+import com.depi.budgetapp.viewmodels.TransactionViewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment() ,OnItemClickListener  {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
-
+    private lateinit var transvm: TransactionViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -100,7 +95,7 @@ class HomeFragment : Fragment() {
             drawerLayout.closeDrawer(GravityCompat.START)
         }
 
-
+/*
         val lineChart = binding.lineChart  // No need to use findViewById
 
 
@@ -186,22 +181,38 @@ class HomeFragment : Fragment() {
         lineChart.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
         lineChart.legend.form = Legend.LegendForm.CIRCLE  // Choose the line form for the legend
         lineChart.invalidate()
+*/
+
+        val adapter=TransactionAdapter(this)
+        val recyclerview=binding.transRv
+        recyclerview.adapter=adapter
+        recyclerview.layoutManager=LinearLayoutManager(requireContext())
 
 
+        transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
+        transvm.getIncomeTransactions().observe(viewLifecycleOwner, Observer {
 
+            trans->adapter.setData(trans)
+        })
 
-
+        binding.transRv.setOnClickListener(View.OnClickListener {
+            onItemClick()
+        })
         binding.bottomNavigation.setupWithNavController( findNavController())
 
         return binding.root
 }
+    override fun onItemClick() {
+       findNavController().navigate(R.id.action_homeFragment_to_editTransactionFragment)
 
-
+    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (toggle.onOptionsItemSelected(item)) {
             true
         } else super.onOptionsItemSelected(item)
     }
+
+
 
 }
 

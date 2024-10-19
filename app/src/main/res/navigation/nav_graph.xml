@@ -70,7 +70,11 @@
         android:id="@+id/homeFragment"
         android:name="com.depi.budgetapp.ui.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_editTransactionFragment"
+            app:destination="@id/editTransactionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.depi.budgetapp.ui.ProfileFragment"
@@ -118,4 +122,9 @@
         android:name="com.depi.budgetapp.ui.AllTransactionFragment"
         android:label="fragment_all_transaction2"
         tools:layout="@layout/fragment_all_transaction2" />
+    <fragment
+        android:id="@+id/editTransactionFragment"
+        android:name="com.depi.budgetapp.ui.EditTransactionFragment"
+        android:label="fragment_edit_transaction"
+        tools:layout="@layout/fragment_edit_transaction" />
 </navigation>
