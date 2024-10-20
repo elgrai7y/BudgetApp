@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -195,15 +196,16 @@ class HomeFragment : Fragment() ,OnItemClickListener  {
             trans->adapter.setData(trans)
         })
 
-        binding.transRv.setOnClickListener(View.OnClickListener {
-            onItemClick()
-        })
+//        binding.transRv.setOnClickListener(View.OnClickListener {
+//            onItemClick()
+//        })
         binding.bottomNavigation.setupWithNavController( findNavController())
 
         return binding.root
 }
-    override fun onItemClick() {
-       findNavController().navigate(R.id.action_homeFragment_to_editTransactionFragment)
+    override fun onItemClick(transaction: Transaction) {
+        val action = HomeFragmentDirections.actionHomeFragmentToEditTransactionFragment(transaction)
+       findNavController().navigate(action)
 
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

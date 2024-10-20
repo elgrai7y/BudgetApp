@@ -16,12 +16,21 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
 import com.depi.budgetapp.R
+import com.depi.budgetapp.data.Transaction
+import com.depi.budgetapp.data.TransactionType
 import com.depi.budgetapp.databinding.FragmentEditTransactionBinding
+import com.depi.budgetapp.util.formatDate
+import com.depi.budgetapp.util.parseDate
+import com.depi.budgetapp.viewmodels.TransactionViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class EditTransactionFragment : Fragment() {
 
@@ -32,6 +41,8 @@ class EditTransactionFragment : Fragment() {
 
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var transvm: TransactionViewModel
+    private val args by navArgs<EditTransactionFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -99,6 +110,9 @@ class EditTransactionFragment : Fragment() {
             drawerLayout.closeDrawer(GravityCompat.START)
         }
 
+        transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
+
+
         return binding.root }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -121,6 +135,19 @@ class EditTransactionFragment : Fragment() {
         view.findViewById<LinearLayout>(R.id.edit_category_button).setOnClickListener {
             showCategoryBottomSheet()
         }
+
+        binding.editBalanceEditText.text = Editable.Factory.getInstance().newEditable(args.currentTransaction.amount.toString())
+
+        binding.editSelectedDateText.text = formatDate(args.currentTransaction.date)
+
+        //
+        binding.saveChangeBtn.setOnClickListener(View.OnClickListener {
+            val amount:Double = binding.editBalanceEditText.text.toString().toDouble()
+            val date:Date = parseDate(binding.editSelectedDateText.text.toString())
+            val currentTransaction = Transaction(amount = amount, date = date, category = args.currentTransaction.category, type = TransactionType.INCOME, id = args.currentTransaction.id)
+
+            transvm.update(currentTransaction)
+        })
     }
 
     // Function to handle text changes in the balance EditText
@@ -166,4 +193,7 @@ class EditTransactionFragment : Fragment() {
         bottomSheetDialog.setCanceledOnTouchOutside(true)
         bottomSheetDialog.show()
     }
+
+
+
 }

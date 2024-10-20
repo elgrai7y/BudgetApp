@@ -126,5 +126,9 @@
         android:id="@+id/editTransactionFragment"
         android:name="com.depi.budgetapp.ui.EditTransactionFragment"
         android:label="fragment_edit_transaction"
-        tools:layout="@layout/fragment_edit_transaction" />
+        tools:layout="@layout/fragment_edit_transaction" >
+        <argument
+                android:name="currentTransaction"
+                app:argType="com.depi.budgetapp.data.Transaction" />
+    </fragment>
 </navigation>
