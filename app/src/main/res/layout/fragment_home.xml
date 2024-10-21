@@ -115,21 +115,53 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/linearLayout2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Latest Transaction"
+                        android:textColor="@color/white"
+                        android:layout_gravity="start"
+                        android:textSize="27sp" />
+
+                    <TextView
+                        android:id="@+id/show_tv"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:gravity="end"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="41dp"
+                        android:text="Show All"
+                        android:layout_gravity="end"
+                        android:textColor="@color/gold"
+                        android:textSize="24sp" />
+                </LinearLayout>
 
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/trans_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="100dp"
                     android:paddingBottom="100dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/linearLayout2"
-                    tools:listitem="@layout/transaction_item"
-                    />
-
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:listitem="@layout/transaction_item" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

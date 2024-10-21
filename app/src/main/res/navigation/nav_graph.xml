@@ -62,11 +62,6 @@
         android:label="fragment_new_wallet"
         tools:layout="@layout/fragment_new_wallet" />
     <fragment
-        android:id="@+id/newWalletFragment"
-        android:name="com.depi.budgetapp.NewWalletFragment"
-        android:label="fragment_new_wallet"
-        tools:layout="@layout/fragment_new_wallet" />
-    <fragment
         android:id="@+id/homeFragment"
         android:name="com.depi.budgetapp.ui.HomeFragment"
         android:label="fragment_home"
@@ -74,6 +69,9 @@
         <action
             android:id="@+id/action_homeFragment_to_editTransactionFragment"
             app:destination="@id/editTransactionFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_allTransactionFragment2"
+            app:destination="@id/allTransactionFragment2" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

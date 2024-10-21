@@ -16,6 +16,7 @@ interface TransactionDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(transaction: Transaction)
 
+
     @Query("SELECT * FROM transaction_table ORDER BY date DESC")
     fun getAllTransactions(): Flow<List<Transaction>>
 
@@ -24,9 +25,6 @@ interface TransactionDao {
 
     @Delete
     suspend fun delete(transaction: Transaction)
-
-    //get all transactions
-
 
 
     //get all income transactions

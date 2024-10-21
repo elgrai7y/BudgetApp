@@ -1,7 +1,6 @@
 package com.depi.budgetapp.ui
 
 import android.icu.text.SimpleDateFormat
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,26 +13,31 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.core.i18n.DateTimeFormatter
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.depi.budgetapp.R
+import com.depi.budgetapp.adapters.CategoryAdapter
+import com.depi.budgetapp.adapters.TransactionAdapter
 import com.depi.budgetapp.data.Transaction
 import com.depi.budgetapp.data.TransactionType
 import com.depi.budgetapp.databinding.FragmentAddTransactionBinding
+import com.depi.budgetapp.viewmodels.CategoryViewModel
 import com.depi.budgetapp.viewmodels.TransactionViewModel
 import com.depi.budgetapp.viewmodels.TransactionViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
-import java.text.ParseException
 import java.util.Date
 import java.util.Locale
+
+
 @AddTransactionFragment.AndroidEntryPoint
 class AddTransactionFragment : Fragment() {
     annotation class AndroidEntryPoint
@@ -47,6 +51,7 @@ class AddTransactionFragment : Fragment() {
     private lateinit var balanceEditText: EditText
     private lateinit var transvm: TransactionViewModel
     private var isincome: Boolean? = null
+    private lateinit var transvm2: CategoryViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -125,7 +130,6 @@ binding.addBtn.setOnClickListener(View.OnClickListener {
             // Close the navigation drawer
             drawerLayout.closeDrawer(GravityCompat.START)
         }
-        insertData()
 
 
         return binding.root
@@ -235,6 +239,16 @@ binding.addBtn.setOnClickListener(View.OnClickListener {
                 val bottomSheetDialog = BottomSheetDialog(requireContext())
                 val sheetView: View = LayoutInflater.from(requireContext())
                     .inflate(R.layout.category_bottom_sheet, null)
+
+                val recyclerView: RecyclerView = sheetView.findViewById(R.id.trans_rv)
+
+                val adapter= CategoryAdapter()
+                recyclerView.adapter=adapter
+                recyclerView.layoutManager = LinearLayoutManager(requireContext())
+                transvm2 = ViewModelProvider(this).get(CategoryViewModel::class.java)
+                transvm2.allCategories.observe(viewLifecycleOwner, Observer {
+                        cate->adapter.setData(cate)
+                })
 
                 bottomSheetDialog.setContentView(sheetView)
                 bottomSheetDialog.setCanceledOnTouchOutside(true)

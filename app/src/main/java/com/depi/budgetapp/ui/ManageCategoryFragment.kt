@@ -9,12 +9,19 @@ import android.widget.Button
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.depi.budgetapp.R
+import com.depi.budgetapp.adapters.CategoryAdapter
+import com.depi.budgetapp.adapters.TransactionAdapter
 import com.depi.budgetapp.databinding.FragmentAddCategoryBinding
 import com.depi.budgetapp.databinding.FragmentAddTransactionBinding
 import com.depi.budgetapp.databinding.FragmentManageCategoryBinding
+import com.depi.budgetapp.viewmodels.CategoryViewModel
+import com.depi.budgetapp.viewmodels.TransactionViewModel
 import com.google.android.material.navigation.NavigationView
 
 
@@ -23,6 +30,7 @@ class ManageCategoryFragment : Fragment() {
 
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var transvm: CategoryViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -95,6 +103,46 @@ class ManageCategoryFragment : Fragment() {
             // Close the navigation drawer
             drawerLayout.closeDrawer(GravityCompat.START)
         }
+
+
+
+
+
+
+
+        val adapter= CategoryAdapter()
+        val recyclerview=binding.transRv
+        recyclerview.adapter=adapter
+        recyclerview.layoutManager= LinearLayoutManager(requireContext())
+        transvm = ViewModelProvider(this).get(CategoryViewModel::class.java)
+        transvm.getIncomeCategory().observe(viewLifecycleOwner, Observer {
+                cate->adapter.setData(cate)
+        })
+
+
+
+        binding.editIncomeButton.setOnClickListener(View.OnClickListener {
+            val adapter= CategoryAdapter()
+            val recyclerview=binding.transRv
+            recyclerview.adapter=adapter
+            recyclerview.layoutManager= LinearLayoutManager(requireContext())
+            transvm = ViewModelProvider(this).get(CategoryViewModel::class.java)
+            transvm.getIncomeCategory().observe(viewLifecycleOwner, Observer {
+                    cate->adapter.setData(cate)
+            })
+        })
+        binding.editExpenseButton .setOnClickListener(View.OnClickListener {
+            val adapter= CategoryAdapter()
+            val recyclerview=binding.transRv
+            recyclerview.adapter=adapter
+            recyclerview.layoutManager= LinearLayoutManager(requireContext())
+            transvm = ViewModelProvider(this).get(CategoryViewModel::class.java)
+            transvm.getExpenseCategory().observe(viewLifecycleOwner, Observer {
+                    cate->adapter.setData(cate)
+            })
+        })
+
+
         return binding.root
     }
 

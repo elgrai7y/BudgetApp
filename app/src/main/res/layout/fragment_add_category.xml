@@ -20,13 +20,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="212dp"
+            android:layout_marginTop="136dp"
             android:layout_marginEnd="24dp"
             android:gravity="center"
             android:text="Add A New \nCategory"
@@ -34,27 +35,63 @@
             android:textSize="40sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@+id/title"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="@+id/title"
+            app:layout_constraintTop_toBottomOf="@id/title">
+
+                <!-- Income Button -->
+                <Button
+                    android:id="@+id/edit_income_button"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#5729662C"
+                    android:padding="10dp"
+                    android:text="Income"
+                    android:textColor="#6FFF74"
+                    android:textSize="23sp" />
+
+                <!-- Expense Button -->
+                <Button
+                    android:id="@+id/edit_expense_button"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:backgroundTint="#4DAB3A3A"
+                    android:padding="10dp"
+                    android:text="Expense"
+                    android:textColor="#FDA09A"
+                    android:textSize="23sp" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/category_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="24dp"
             android:background="@drawable/edittxt"
             android:hint="Category Name"
-            android:layout_marginTop="70dp"
             android:inputType="text"
             android:padding="12dp"
             android:textColor="#FFFFFF"
             android:textColorHint="#A9A9A9"
             app:layout_constraintEnd_toEndOf="@+id/title"
-            app:layout_constraintHorizontal_bias="0.465"
+            app:layout_constraintHorizontal_bias="0.458"
             app:layout_constraintStart_toStartOf="@+id/title"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
         <Button
             android:id="@+id/add_button"
@@ -71,10 +108,10 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/title"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintHorizontal_bias="0.536"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/category_name"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.169" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

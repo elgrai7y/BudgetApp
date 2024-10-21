@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,7 +23,7 @@ import com.depi.budgetapp.adapters.TransactionAdapter
 import com.depi.budgetapp.data.Transaction
 import com.depi.budgetapp.viewmodels.TransactionViewModel
 
-class HomeFragment : Fragment() ,OnItemClickListener  {
+class HomeFragment : Fragment()   {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
@@ -51,13 +52,16 @@ class HomeFragment : Fragment() ,OnItemClickListener  {
         toggle.syncState()
 
 
-
+        binding.showTv.setOnClickListener(View.OnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_allTransactionFragment2)
+         })
 
 
 
         drawerLayout = binding.drawable
 
         val navigationView: NavigationView = binding.navView
+
 
         val headerView = navigationView.getHeaderView(0)
         val headerButton: Button = headerView.findViewById(R.id.profile_nv)
@@ -66,7 +70,6 @@ class HomeFragment : Fragment() ,OnItemClickListener  {
             findNavController().navigate(R.id.profileFragment)
 
             // Close the navigation drawer
-            drawerLayout.closeDrawer(GravityCompat.START)
         }
         val headerButton2: Button = headerView.findViewById(R.id.home_nv)
         headerButton2.setOnClickListener {
@@ -74,7 +77,6 @@ class HomeFragment : Fragment() ,OnItemClickListener  {
             findNavController().navigate(R.id.homeFragment)
 
             // Close the navigation drawer
-            drawerLayout.closeDrawer(GravityCompat.START)
         }
 
         val headerButton3: Button = headerView.findViewById(R.id.trans_nv)
@@ -83,7 +85,6 @@ class HomeFragment : Fragment() ,OnItemClickListener  {
             findNavController().navigate(R.id.allTransactionFragment2)
 
             // Close the navigation drawer
-            drawerLayout.closeDrawer(GravityCompat.START)
         }
 
         val headerButton4: Button = headerView.findViewById(R.id.category_nv)
@@ -92,7 +93,6 @@ class HomeFragment : Fragment() ,OnItemClickListener  {
             findNavController().navigate(R.id.manageCategoryFragment)
 
             // Close the navigation drawer
-            drawerLayout.closeDrawer(GravityCompat.START)
         }
 
 /*
@@ -183,29 +183,21 @@ class HomeFragment : Fragment() ,OnItemClickListener  {
         lineChart.invalidate()
 */
 
-        val adapter=TransactionAdapter(this)
+        val adapter=TransactionAdapter()
         val recyclerview=binding.transRv
         recyclerview.adapter=adapter
         recyclerview.layoutManager=LinearLayoutManager(requireContext())
-
-
         transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
-        transvm.getIncomeTransactions().observe(viewLifecycleOwner, Observer {
-
+        transvm.allTransactions.observe(viewLifecycleOwner, Observer {
             trans->adapter.setData(trans)
         })
 
-        binding.transRv.setOnClickListener(View.OnClickListener {
-            onItemClick()
-        })
+
+
         binding.bottomNavigation.setupWithNavController( findNavController())
 
         return binding.root
 }
-    override fun onItemClick() {
-       findNavController().navigate(R.id.action_homeFragment_to_editTransactionFragment)
-
-    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (toggle.onOptionsItemSelected(item)) {
             true

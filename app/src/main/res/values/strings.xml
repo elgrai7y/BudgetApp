@@ -21,10 +21,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-=======
+    =======
     <!--    strings for firebase google acount authentication-->
     <string name="client_id">978894423686-052nar98ue3v1n1s0578vla5nscn66dl.apps.googleusercontent.com</string>
->>>>>>> sub_branch
+    >>>>>>> sub_branch
 
     <!-- to toggle the open close button of the navigation drawer -->
     <string name="nav_open">Open</string>

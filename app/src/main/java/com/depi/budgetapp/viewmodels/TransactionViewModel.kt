@@ -4,14 +4,19 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.depi.budgetapp.data.Category
 import com.depi.budgetapp.data.Transaction
 import com.depi.budgetapp.data.TransactionDatabase
 import com.depi.budgetapp.repo.TransactionRepository
 import kotlinx.coroutines.launch
+import com.depi.budgetapp.repo.CategoryRepository
 
 class TransactionViewModel(application: Application) : AndroidViewModel(application) {
 
     private var repository: TransactionRepository
+
+
+
 
     //    private var _allTransactions: MutableLiveData<List<Transaction>> =  MutableLiveData<List<Transaction>>()
     var allTransactions: LiveData<List<Transaction>>
