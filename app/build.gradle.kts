@@ -101,6 +101,10 @@ dependencies {
 
     implementation ("androidx.room:room-runtime:2.6.1") // or latest version
     implementation ("androidx.room:room-ktx:2.6.1") // Optional, for Kotlin extensions
+
+    //data store
+    implementation ("androidx.datastore:datastore:1.1.1")
+    implementation ("androidx.datastore:datastore-preferences:1.1.1")
 }
 
 

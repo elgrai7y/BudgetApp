@@ -48,5 +48,6 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
     fun getWeeklyExpenseTransactions() = repository.getWeeklyExpenseTransactions()
     fun getMonthlyExpenseTransactions() = repository.getMonthlyExpenseTransactions()
     fun getYearlyExpenseTransactions() = repository.getYearlyExpenseTransactions()
-
+    fun getTotalIncomeAmount() = repository.getTotalIncomeAmount()
+    fun getTotalExpenseAmount() = repository.getTotalExpenseAmount()
 }

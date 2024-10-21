@@ -60,7 +60,11 @@
         android:id="@+id/newWalletFragment3"
         android:name="com.depi.budgetapp.NewWalletFragment"
         android:label="fragment_new_wallet"
-        tools:layout="@layout/fragment_new_wallet" />
+        tools:layout="@layout/fragment_new_wallet" >
+        <action
+                android:id="@+id/action_newWalletFragment3_to_homeFragment"
+                app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/newWalletFragment"
         android:name="com.depi.budgetapp.NewWalletFragment"

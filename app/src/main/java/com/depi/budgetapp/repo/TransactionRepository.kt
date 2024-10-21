@@ -93,4 +93,8 @@ class TransactionRepository(private val transactionDao: TransactionDao) {
             DateHelper.getStartOfYear(),
             DateHelper.getEndOfToday()
         ).asLiveData()
+
+    fun getTotalIncomeAmount() = transactionDao.getTotalIncomeAmount().asLiveData()
+    fun getTotalExpenseAmount() = transactionDao.getTotalExpenseAmount().asLiveData()
+
 }
