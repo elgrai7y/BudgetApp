@@ -50,7 +50,6 @@ class EditTransactionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentEditTransactionBinding.inflate(inflater, container, false)
-        binding.bottomNavigation.setupWithNavController( findNavController())
 
 
         binding.toolbar.setNavigationOnClickListener {

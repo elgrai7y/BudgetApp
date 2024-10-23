@@ -42,7 +42,8 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentProfileBinding.inflate(inflater, container, false)
+
+            binding = FragmentProfileBinding.inflate(inflater, container, false)
 
 
 
@@ -104,48 +105,49 @@ class ProfileFragment : Fragment() {
             // Close the navigation drawer
             drawerLayout.closeDrawer(GravityCompat.START)
         }
-        binding.bottomNavigation.setupWithNavController(findNavController())
+
+    transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
+
+    transvm.getIncomeTransactions().observe(viewLifecycleOwner) { it ->
+        numofIncome = it.size
+        binding.numi.text = numofIncome.toString()
+    }
+
+    transvm.getExpenseTransactions().observe(viewLifecycleOwner) {
+        numOfExpense = it.size
+        binding.nume.text = numOfExpense.toString()
+
+    }
+
+    userPreferences = UserPreferences.getInstance(requireContext())
 
 
-        transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
-
-        transvm.getIncomeTransactions().observe(viewLifecycleOwner) { it ->
-            numofIncome = it.size
-            binding.numi.text = numofIncome.toString()
-        }
-
-        transvm.getExpenseTransactions().observe(viewLifecycleOwner) {
-            numOfExpense = it.size
-            binding.nume.text = numOfExpense.toString()
-
-        }
-
-        userPreferences = UserPreferences.getInstance(requireContext())
-
-
-        transvm.getTotalIncomeAmount().observe(viewLifecycleOwner) {
-         pos=it?: 0.0
-           this.userBalance +=it.toString().toDouble()
-            lifecycleScope.launch {
-                userPreferences.balance.collect {
-                    balance ->userBalance
-                    binding.walletBalance.text = userBalance.toString()
-                }
+    transvm.getTotalIncomeAmount().observe(viewLifecycleOwner) {
+        pos = it ?: 0.0
+        this.userBalance += it.toString().toDouble()
+        lifecycleScope.launch {
+            userPreferences.balance.collect { balance ->
+                userBalance
+                binding.walletBalance.text = userBalance.toString()
             }
         }
-        transvm.getTotalExpenseAmount().observe(viewLifecycleOwner) {
-            neg=it?: 0.0
-            this.userBalance -=it.toString().toDouble()
-            lifecycleScope.launch {
-                userPreferences.balance.collect {
-                    balance ->userBalance
-                    binding.walletBalance.text = userBalance.toString()
-                }
+    }
+    transvm.getTotalExpenseAmount().observe(viewLifecycleOwner) {
+        neg = it ?: 0.0
+        this.userBalance -= it.toString().toDouble()
+        lifecycleScope.launch {
+            userPreferences.balance.collect { balance ->
+                userBalance
+                binding.walletBalance.text = userBalance.toString()
             }
         }
+    }
+
 
         return binding.root
+
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -168,7 +170,4 @@ class ProfileFragment : Fragment() {
     }
 
 
-    private fun netBalance(): Double {
-        return 0.0
-    }
 }

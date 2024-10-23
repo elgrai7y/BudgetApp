@@ -1,11 +1,13 @@
 package com.depi.budgetapp.ui
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.depi.budgetapp.R
 import com.depi.budgetapp.data.Category
@@ -18,6 +20,7 @@ class AddCategoryFragment : Fragment() {
     private lateinit var binding: FragmentAddCategoryBinding
     private lateinit var transvm: CategoryViewModel
     private var isincome: Boolean? = null
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,7 +35,9 @@ class AddCategoryFragment : Fragment() {
         val clickListener = View.OnClickListener { view ->
 
             when (view.getId()) {
-                R.id.edit_income_button -> isincome = true
+                R.id.edit_income_button -> {
+                    isincome = true
+                }
                 R.id.edit_expense_button -> isincome = false
             }
         }
@@ -44,6 +49,7 @@ class AddCategoryFragment : Fragment() {
         transvm = ViewModelProvider(this).get(CategoryViewModel::class.java)
         binding.addButton.setOnClickListener(View.OnClickListener {
             insertData()
+
         })
 
 
@@ -66,6 +72,8 @@ class AddCategoryFragment : Fragment() {
             Toast.makeText(requireActivity(), "ok", Toast.LENGTH_SHORT).show()
 
             transvm.insert(category)
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+
         }
         else if(transCategory != null  && isincome == false) {
             val category = Category(
@@ -77,6 +85,8 @@ class AddCategoryFragment : Fragment() {
             Toast.makeText(requireActivity(), "ok3", Toast.LENGTH_SHORT).show()
 
             transvm.insert(category)
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+
         }
         else Toast.makeText(requireActivity(), "complete info please", Toast.LENGTH_SHORT).show()
 

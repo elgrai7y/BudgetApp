@@ -50,30 +50,7 @@ class HomeFragment : Fragment(),OnItemClickListener   {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        userPreferences = UserPreferences.getInstance(requireContext())
 
-        transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
-
-        transvm.getTotalIncomeAmount().observe(viewLifecycleOwner) {
-            pos=it?: 0.0
-            this.userBalance +=it.toString().toDouble()
-            lifecycleScope.launch {
-                userPreferences.balance.collect {
-                        balance ->userBalance
-                    binding.walletBalance.text = userBalance.toString()
-                }
-            }
-        }
-        transvm.getTotalExpenseAmount().observe(viewLifecycleOwner) {
-            neg=it?: 0.0
-            this.userBalance -=it.toString().toDouble()
-            lifecycleScope.launch {
-                userPreferences.balance.collect {
-                        balance ->userBalance
-                    binding.walletBalance.text = userBalance.toString()
-                }
-            }
-        }
 
 
         binding.toolbar.setNavigationOnClickListener {
@@ -231,7 +208,30 @@ class HomeFragment : Fragment(),OnItemClickListener   {
             trans->adapter.setData(trans)
         })
 
-        binding.bottomNavigation.setupWithNavController( findNavController())
+
+        userPreferences = UserPreferences.getInstance(requireContext())
+
+
+        transvm.getTotalIncomeAmount().observe(viewLifecycleOwner) {
+            pos = it ?: 0.0
+            this.userBalance += it.toString().toDouble()
+            lifecycleScope.launch {
+                userPreferences.balance.collect { balance ->
+                    userBalance
+                    binding.walletBalance.text = userBalance.toString()
+                }
+            }
+        }
+        transvm.getTotalExpenseAmount().observe(viewLifecycleOwner) {
+            neg = it ?: 0.0
+            this.userBalance -= it.toString().toDouble()
+            lifecycleScope.launch {
+                userPreferences.balance.collect { balance ->
+                    userBalance
+                    binding.walletBalance.text = userBalance.toString()
+                }
+            }
+        }
 
         return binding.root
 }

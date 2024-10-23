@@ -34,7 +34,6 @@ class AllTransactionFragment : Fragment(), OnItemClickListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAllTransaction2Binding.inflate(inflater, container, false)
-        binding.bottomNavigation.setupWithNavController( findNavController())
 
 
         binding.toolbar.setNavigationOnClickListener {

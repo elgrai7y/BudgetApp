@@ -42,7 +42,6 @@ class ManageCategoryFragment : Fragment(), OnCategoryClickListener {
             findNavController().navigate(R.id.action_manageCategoryFragment_to_addCategoryFragment)
 
         })
-        binding.bottomNavigation.setupWithNavController( findNavController())
 
 
 

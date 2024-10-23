@@ -54,7 +54,7 @@
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="18dp"
-                app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbar">
 
                 <LinearLayout
@@ -170,19 +170,7 @@
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:itemIconTint="@color/nav_item_color"
-                app:itemTextColor="@color/nav_item_color"
-                app:labelVisibilityMode="labeled"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linear_rv"
-                app:menu="@menu/bottom_menu" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
         <!--  NavigationView for the drawer  -->
         <com.google.android.material.navigation.NavigationView

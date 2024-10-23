@@ -74,16 +74,14 @@ class AddTransactionFragment : Fragment(),OnCategoryClickListener {
         binding.editExpenseButton.setOnClickListener(clickListener)
 
         //************************************
-        val factory = TransactionViewModelFactory(requireActivity().application)
 
-        transvm = ViewModelProvider(this, factory).get(TransactionViewModel::class.java)
+        transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
         binding.addBtn.setOnClickListener(View.OnClickListener {
             insertData()
         })
 
         //************************************
 
-        binding.bottomNavigation.setupWithNavController(findNavController())
 
 
         binding.toolbar.setNavigationOnClickListener {
@@ -160,6 +158,8 @@ class AddTransactionFragment : Fragment(),OnCategoryClickListener {
             Toast.makeText(requireActivity(), "$transBalance", Toast.LENGTH_SHORT).show()
 
             transvm.insert(transaction)
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+
         }
         else if(transBalance != null && transDate != null && isincome == false) {
             val transaction = Transaction(
@@ -172,9 +172,14 @@ class AddTransactionFragment : Fragment(),OnCategoryClickListener {
             Toast.makeText(requireActivity(), "$transBalance", Toast.LENGTH_SHORT).show()
 
             transvm.insert(transaction)
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+
         }
 
-        else Toast.makeText(requireActivity(), "complete info please", Toast.LENGTH_SHORT).show()
+        else {
+            Toast.makeText(requireActivity(), "complete info please", Toast.LENGTH_SHORT).show()
+
+        }
 
     }
 

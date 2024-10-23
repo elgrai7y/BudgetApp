@@ -111,7 +111,11 @@
         android:id="@+id/addTransactionFragment"
         android:name="com.depi.budgetapp.ui.AddTransactionFragment"
         android:label="fragment_add_transaction"
-        tools:layout="@layout/fragment_add_transaction" />
+        tools:layout="@layout/fragment_add_transaction" >
+        <action
+            android:id="@+id/action_addTransactionFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/manageCategoryFragment"
         android:name="com.depi.budgetapp.ui.ManageCategoryFragment"
