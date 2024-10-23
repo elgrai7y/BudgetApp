@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.depi.budgetapp.R
 import com.depi.budgetapp.adapters.CategoryAdapter
 import com.depi.budgetapp.adapters.TransactionAdapter
+import com.depi.budgetapp.data.Category
 import com.depi.budgetapp.data.Transaction
 import com.depi.budgetapp.data.TransactionType
 import com.depi.budgetapp.databinding.FragmentAddTransactionBinding
@@ -39,12 +40,13 @@ import java.util.Locale
 
 
 @AddTransactionFragment.AndroidEntryPoint
-class AddTransactionFragment : Fragment() {
+class AddTransactionFragment : Fragment(),OnCategoryClickListener {
     annotation class AndroidEntryPoint
 
     private lateinit var binding: FragmentAddTransactionBinding
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var bottomSheetDialog: BottomSheetDialog
 
 
     private lateinit var selectedDateText: TextView
@@ -75,9 +77,9 @@ class AddTransactionFragment : Fragment() {
         val factory = TransactionViewModelFactory(requireActivity().application)
 
         transvm = ViewModelProvider(this, factory).get(TransactionViewModel::class.java)
-binding.addBtn.setOnClickListener(View.OnClickListener {
-    insertData()
-})
+        binding.addBtn.setOnClickListener(View.OnClickListener {
+            insertData()
+        })
 
         //************************************
 
@@ -136,124 +138,132 @@ binding.addBtn.setOnClickListener(View.OnClickListener {
     }
     //************************************
 
-            private fun insertData() {
-                val transBalance = binding.editBalanceEditText.text.toString().toDoubleOrNull()
-                val transCategory = binding.categoryName.text.toString()
-                val selectedDateString = binding.editSelectedDateText.text.toString()
+    private fun insertData() {
+        val transBalance = binding.editBalanceEditText.text.toString().toDoubleOrNull()
+        val transCategory = binding.categoryName.text.toString()
+        val selectedDateString = binding.editSelectedDateText.text.toString()
 
-                val transDate: Date =
-                    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(selectedDateString)
-
-
-
-                if (transBalance != null && transDate != null && isincome == true) {
-                    val transaction = Transaction(
-                        0,
-                        TransactionType.INCOME,
-                        transCategory,
-                        transBalance,
-                        transDate
-                    )
-                    Toast.makeText(requireActivity(), "$transBalance", Toast.LENGTH_SHORT).show()
-
-                    transvm.insert(transaction)
-                }
-                else if(transBalance != null && transDate != null && isincome == false) {
-                    val transaction = Transaction(
-                        0,
-                        TransactionType.EXPENSE,
-                        transCategory,
-                        transBalance,
-                        transDate
-                    )
-                    Toast.makeText(requireActivity(), "$transBalance", Toast.LENGTH_SHORT).show()
-
-                    transvm.insert(transaction)
-                }
-                else Toast.makeText(requireActivity(), "complete info please", Toast.LENGTH_SHORT).show()
-
-            }
-
-            override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-                super.onViewCreated(view, savedInstanceState)
-
-                // Initialize views
-                selectedDateText = view.findViewById(R.id.edit_selected_date_text)
-                balanceEditText = view.findViewById(R.id.edit_balance_edit_text)
-
-                // Setup EditText TextWatcher
-                setupBalanceEditText()
-
-                // Setup Date Picker Bottom Sheet
-                view.findViewById<LinearLayout>(R.id.edit_date_picker_layout).setOnClickListener {
-                    showDatePickerBottomSheet()
-                }
-
-                // Setup Category Button Bottom Sheet
-                view.findViewById<LinearLayout>(R.id.edit_category_button).setOnClickListener {
-                    showCategoryBottomSheet()
-                }
-            }
-
-            // Function to handle text changes in the balance EditText
-            private fun setupBalanceEditText() {
-                binding.editBalanceEditText.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                        val input = s.toString()
-                        if (input.isNotEmpty()) {
-                            val value = input.toDoubleOrNull()
-                            if (value == null) {
-                                binding.editBalanceEditText.error = "Please enter a valid number"
-                            }
-                        }
-                    }
-
-                    override fun afterTextChanged(s: Editable?) {}
-                })
-            }
-
-            // Function to show the DatePicker bottom sheet
-            private fun showDatePickerBottomSheet() {
-                val bottomSheetDialog = BottomSheetDialog(requireContext())
-                val sheetView: View = LayoutInflater.from(requireContext())
-                    .inflate(R.layout.bottom_sheet_date_picker, null)
-
-                val datePicker = sheetView.findViewById<DatePicker>(R.id.datePicker)
-                sheetView.findViewById<View>(R.id.confirm_button).setOnClickListener {
-                    val day = datePicker.dayOfMonth
-                    val month = datePicker.month + 1 // DatePicker months are zero-indexed
-                    val year = datePicker.year
-                    selectedDateText.text = getString(R.string.selected_date_format, day, month, year)
-                    bottomSheetDialog.dismiss()
-                }
-
-                bottomSheetDialog.setContentView(sheetView)
-                bottomSheetDialog.setCanceledOnTouchOutside(true)
-                bottomSheetDialog.show()
-            }
-
-            // Function to show the Category selection bottom sheet
-            private fun showCategoryBottomSheet() {
-                val bottomSheetDialog = BottomSheetDialog(requireContext())
-                val sheetView: View = LayoutInflater.from(requireContext())
-                    .inflate(R.layout.category_bottom_sheet, null)
-
-                val recyclerView: RecyclerView = sheetView.findViewById(R.id.trans_rv)
-
-                val adapter= CategoryAdapter()
-                recyclerView.adapter=adapter
-                recyclerView.layoutManager = LinearLayoutManager(requireContext())
-                transvm2 = ViewModelProvider(this).get(CategoryViewModel::class.java)
-                transvm2.allCategories.observe(viewLifecycleOwner, Observer {
-                        cate->adapter.setData(cate)
-                })
-
-                bottomSheetDialog.setContentView(sheetView)
-                bottomSheetDialog.setCanceledOnTouchOutside(true)
-                bottomSheetDialog.show()
-            }
+        val transDate: Date =
+            SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(selectedDateString)
 
 
+
+        if (transBalance != null && transDate != null && isincome == true) {
+            val transaction = Transaction(
+                0,
+                TransactionType.INCOME,
+                transCategory,
+                transBalance,
+                transDate
+            )
+
+            Toast.makeText(requireActivity(), "$transBalance", Toast.LENGTH_SHORT).show()
+
+            transvm.insert(transaction)
         }
+        else if(transBalance != null && transDate != null && isincome == false) {
+            val transaction = Transaction(
+                0,
+                TransactionType.EXPENSE,
+                transCategory,
+                transBalance,
+                transDate
+            )
+            Toast.makeText(requireActivity(), "$transBalance", Toast.LENGTH_SHORT).show()
+
+            transvm.insert(transaction)
+        }
+
+        else Toast.makeText(requireActivity(), "complete info please", Toast.LENGTH_SHORT).show()
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Initialize views
+        selectedDateText = view.findViewById(R.id.edit_selected_date_text)
+        balanceEditText = view.findViewById(R.id.edit_balance_edit_text)
+
+        // Setup EditText TextWatcher
+        setupBalanceEditText()
+
+        // Setup Date Picker Bottom Sheet
+        view.findViewById<LinearLayout>(R.id.edit_date_picker_layout).setOnClickListener {
+            showDatePickerBottomSheet()
+        }
+
+        // Setup Category Button Bottom Sheet
+        view.findViewById<LinearLayout>(R.id.edit_category_button).setOnClickListener {
+            showCategoryBottomSheet()
+        }
+    }
+
+    // Function to handle text changes in the balance EditText
+    private fun setupBalanceEditText() {
+        binding.editBalanceEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val input = s.toString()
+                if (input.isNotEmpty()) {
+                    val value = input.toDoubleOrNull()
+                    if (value == null) {
+                        binding.editBalanceEditText.error = "Please enter a valid number"
+                    }
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+    // Function to show the DatePicker bottom sheet
+    private fun showDatePickerBottomSheet() {
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        val sheetView: View = LayoutInflater.from(requireContext())
+            .inflate(R.layout.bottom_sheet_date_picker, null)
+
+        val datePicker = sheetView.findViewById<DatePicker>(R.id.datePicker)
+        sheetView.findViewById<View>(R.id.confirm_button).setOnClickListener {
+            val day = datePicker.dayOfMonth
+            val month = datePicker.month + 1 // DatePicker months are zero-indexed
+            val year = datePicker.year
+            selectedDateText.text = getString(R.string.selected_date_format, day, month, year)
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetDialog.setContentView(sheetView)
+        bottomSheetDialog.setCanceledOnTouchOutside(true)
+        bottomSheetDialog.show()
+    }
+
+    // Function to show the Category selection bottom sheet
+    private fun showCategoryBottomSheet() {
+        val sheetView = LayoutInflater.from(requireContext())
+            .inflate(R.layout.category_bottom_sheet, null)
+
+        // Create the BottomSheetDialog
+        bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog.setContentView(sheetView)
+        val recyclerView: RecyclerView = sheetView.findViewById(R.id.trans_rv)
+
+        val adapter= CategoryAdapter(this)
+        recyclerView.adapter=adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        transvm2 = ViewModelProvider(this).get(CategoryViewModel::class.java)
+        transvm2.allCategories.observe(viewLifecycleOwner, Observer {
+                cate->adapter.setData(cate)
+        })
+
+        bottomSheetDialog.setContentView(sheetView)
+        bottomSheetDialog.setCanceledOnTouchOutside(true)
+        bottomSheetDialog.show()
+    }
+
+    override fun onCategoryClick(category: Category) {
+        binding.categoryName.text=category.categoryname
+        bottomSheetDialog.dismiss()
+    }
+
+}

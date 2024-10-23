@@ -1,28 +1,34 @@
 package com.depi.budgetapp.ui
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.depi.budgetapp.R
 import com.depi.budgetapp.databinding.FragmentSigupBinding
 import com.depi.budgetapp.repo.AuthRepository
+import com.depi.budgetapp.util.UserPreferences
 import com.depi.budgetapp.util.arePasswordsEqual
 import com.depi.budgetapp.util.isValidEmail
 import com.depi.budgetapp.util.isValidPassword
 import com.depi.budgetapp.viewmodels.AuthViewModel
 import com.depi.budgetapp.viewmodels.AuthViewModelFactory
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.launch
 
 class SigupFragment : Fragment() {
 
     private lateinit var binding: FragmentSigupBinding
 
     private lateinit var authRepository: AuthRepository
+
+    private lateinit var userPreferences: UserPreferences
 
 
     private val authViewModel: AuthViewModel by viewModels {
@@ -37,6 +43,7 @@ class SigupFragment : Fragment() {
     ): View {
         binding = FragmentSigupBinding.inflate(inflater, container, false)
 
+        userPreferences = UserPreferences.getInstance(requireContext())
 
         // init view
         return binding.root
@@ -62,7 +69,10 @@ class SigupFragment : Fragment() {
             val email = binding.emailEt.text.toString()
             val password = binding.passEt.text.toString()
             val confirmPassword = binding.confirmPassEt.text.toString()
-            register(email, password, confirmPassword)
+            val firstName = binding.firstNameEt.text.toString()
+            val lastName = binding.lastNameEt.text.toString()
+
+            register(firstName, lastName, email, password, confirmPassword)
 
         })
 
@@ -95,7 +105,7 @@ class SigupFragment : Fragment() {
         Toast.makeText(requireActivity(), exception.message, Toast.LENGTH_LONG).show()
     }
 
-    private fun register(email: String, password: String, confirmPassword: String) {
+    private fun register(firstName: String, lastName: String,  email: String, password: String, confirmPassword: String) {
         if (!isValidEmail(email)) {
             Toast.makeText(requireActivity(), "not valid Email form", Toast.LENGTH_SHORT).show()
             return
@@ -112,8 +122,13 @@ class SigupFragment : Fragment() {
             Toast.makeText(requireActivity(), "Passwords do not match", Toast.LENGTH_SHORT).show()
             return
         }
+        if (TextUtils.isEmpty(firstName) && TextUtils.isEmpty(lastName)) {
+            Toast.makeText(requireActivity(), "Please enter your first name nad last name", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-
+        val fullName = "$firstName $lastName"
+        lifecycleScope.launch {  userPreferences.saveUserInfo(fullName, email)}
         authViewModel.register(email, password)
         findNavController().navigate(R.id.action_sigupFragment_to_newWalletFragment3)
 

@@ -16,12 +16,23 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
 import com.depi.budgetapp.R
-import com.depi.budgetapp.databinding.FragmentEditTransactionBinding
+import com.depi.budgetapp.data.Transaction
+import com.depi.budgetapp.data.TransactionType
+import com.depi.budgetapp.util.formatDate
+import com.depi.budgetapp.util.parseDate
+import com.depi.budgetapp.viewmodels.TransactionViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
+import java.text.SimpleDateFormat
+import java.util.Date
+import com.depi.budgetapp.databinding.FragmentEditTransactionBinding
+import androidx.appcompat.app.AlertDialog
+
 
 class EditTransactionFragment : Fragment() {
 
@@ -32,6 +43,8 @@ class EditTransactionFragment : Fragment() {
 
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var transvm: TransactionViewModel
+    private val args by navArgs<EditTransactionFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -99,6 +112,9 @@ class EditTransactionFragment : Fragment() {
             drawerLayout.closeDrawer(GravityCompat.START)
         }
 
+        transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
+
+
         return binding.root }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -121,6 +137,22 @@ class EditTransactionFragment : Fragment() {
         view.findViewById<LinearLayout>(R.id.edit_category_button).setOnClickListener {
             showCategoryBottomSheet()
         }
+
+        binding.editBalanceEditText.text = Editable.Factory.getInstance().newEditable(args.currentTransaction.amount.toString())
+
+        binding.editSelectedDateText.text = formatDate(args.currentTransaction.date)
+
+        //
+        binding.saveChangeBtn.setOnClickListener(View.OnClickListener {
+            editeAlart()
+        })
+        binding.deleteBtn.setOnClickListener(View.OnClickListener {
+          deleteAlart()
+        })
+        binding.backBtn.setOnClickListener(View.OnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+
+        })
     }
 
     // Function to handle text changes in the balance EditText
@@ -166,4 +198,84 @@ class EditTransactionFragment : Fragment() {
         bottomSheetDialog.setCanceledOnTouchOutside(true)
         bottomSheetDialog.show()
     }
+
+    private fun editeAlart() {
+
+        val builder = AlertDialog.Builder(requireContext())
+
+        // Set the message show for the Alert time
+        builder.setMessage("Do you want to save changes ?")
+
+        // Set Alert Title
+
+        // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+        builder.setCancelable(false)
+
+        // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+        builder.setPositiveButton("Yes") {
+
+
+                dialog, which -> dialog.dismiss()
+            val amount:Double = binding.editBalanceEditText.text.toString().toDouble()
+            val date:Date = parseDate(binding.editSelectedDateText.text.toString())
+            val currentTransaction = Transaction(amount = amount, date = date, category = args.currentTransaction.category, type = TransactionType.INCOME, id = args.currentTransaction.id)
+
+            transvm.update(currentTransaction)
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+
+        }
+
+        // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+        builder.setNegativeButton("No") {
+            // If user click no then dialog box is canceled.
+                dialog, which -> dialog.cancel()
+        }
+
+        // Create the Alert dialog
+        val alertDialog = builder.create()
+        // Show the Alert Dialog box
+        alertDialog.show()
+    }
+
+    private fun deleteAlart() {
+
+        val builder = AlertDialog.Builder(requireContext())
+
+        // Set the message show for the Alert time
+        builder.setMessage("Are you sure you want to Delete this Transaction ?")
+
+        // Set Alert Title
+
+        // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+        builder.setCancelable(false)
+
+        // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+        builder.setPositiveButton("Yes") {
+
+
+                dialog, which -> dialog.dismiss()
+            val amount:Double = binding.editBalanceEditText.text.toString().toDouble()
+            val date:Date = parseDate(binding.editSelectedDateText.text.toString())
+            val currentTransaction = Transaction(amount = amount, date = date, category = args.currentTransaction.category, type = TransactionType.INCOME, id = args.currentTransaction.id)
+
+            transvm.delete(currentTransaction)
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+
+        }
+
+        // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+        builder.setNegativeButton("No") {
+            // If user click no then dialog box is canceled.
+                dialog, which -> dialog.cancel()
+        }
+
+        // Create the Alert dialog
+        val alertDialog = builder.create()
+        // Show the Alert Dialog box
+        alertDialog.show()
+    }
+
+
+
+
 }

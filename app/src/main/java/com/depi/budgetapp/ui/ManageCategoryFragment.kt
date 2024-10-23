@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.depi.budgetapp.R
 import com.depi.budgetapp.adapters.CategoryAdapter
 import com.depi.budgetapp.adapters.TransactionAdapter
+import com.depi.budgetapp.data.Category
 import com.depi.budgetapp.databinding.FragmentAddCategoryBinding
 import com.depi.budgetapp.databinding.FragmentAddTransactionBinding
 import com.depi.budgetapp.databinding.FragmentManageCategoryBinding
@@ -25,7 +26,7 @@ import com.depi.budgetapp.viewmodels.TransactionViewModel
 import com.google.android.material.navigation.NavigationView
 
 
-class ManageCategoryFragment : Fragment() {
+class ManageCategoryFragment : Fragment(), OnCategoryClickListener {
     private lateinit var binding:FragmentManageCategoryBinding
 
     private lateinit var toggle: ActionBarDrawerToggle
@@ -37,10 +38,10 @@ class ManageCategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentManageCategoryBinding.inflate(inflater, container, false)
-       binding.createBtn.setOnClickListener(View.OnClickListener {
-           findNavController().navigate(R.id.action_manageCategoryFragment_to_addCategoryFragment)
+        binding.createBtn.setOnClickListener(View.OnClickListener {
+            findNavController().navigate(R.id.action_manageCategoryFragment_to_addCategoryFragment)
 
-       })
+        })
         binding.bottomNavigation.setupWithNavController( findNavController())
 
 
@@ -110,7 +111,7 @@ class ManageCategoryFragment : Fragment() {
 
 
 
-        val adapter= CategoryAdapter()
+        val adapter= CategoryAdapter(this)
         val recyclerview=binding.transRv
         recyclerview.adapter=adapter
         recyclerview.layoutManager= LinearLayoutManager(requireContext())
@@ -122,7 +123,7 @@ class ManageCategoryFragment : Fragment() {
 
 
         binding.editIncomeButton.setOnClickListener(View.OnClickListener {
-            val adapter= CategoryAdapter()
+            val adapter= CategoryAdapter(this)
             val recyclerview=binding.transRv
             recyclerview.adapter=adapter
             recyclerview.layoutManager= LinearLayoutManager(requireContext())
@@ -132,7 +133,7 @@ class ManageCategoryFragment : Fragment() {
             })
         })
         binding.editExpenseButton .setOnClickListener(View.OnClickListener {
-            val adapter= CategoryAdapter()
+            val adapter= CategoryAdapter(this)
             val recyclerview=binding.transRv
             recyclerview.adapter=adapter
             recyclerview.layoutManager= LinearLayoutManager(requireContext())
@@ -145,6 +146,11 @@ class ManageCategoryFragment : Fragment() {
 
         return binding.root
     }
+
+    override fun onCategoryClick(category: Category) {
+        TODO("Not yet implemented")
+    }
+
 
 
 }

@@ -6,6 +6,7 @@ plugins {
     //plugin for firebase
     id("com.google.gms.google-services")
     id("kotlin-kapt")
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -59,6 +60,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.2")
     implementation("androidx.core:core-i18n:1.0.0-alpha01")
     implementation("com.google.firebase:protolite-well-known-types:18.0.0")
+    androidTestImplementation ("androidx.navigation:navigation-testing:2.8.3")
 
     // Testing Navigation
     androidTestImplementation("androidx.navigation:navigation-testing")
@@ -99,6 +101,10 @@ dependencies {
 
     implementation ("androidx.room:room-runtime:2.6.1") // or latest version
     implementation ("androidx.room:room-ktx:2.6.1") // Optional, for Kotlin extensions
+
+    //data store
+    implementation ("androidx.datastore:datastore:1.1.1")
+    implementation ("androidx.datastore:datastore-preferences:1.1.1")
 }
 
 

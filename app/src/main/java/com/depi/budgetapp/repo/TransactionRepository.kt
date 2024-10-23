@@ -5,11 +5,16 @@ import androidx.lifecycle.asLiveData
 import com.depi.budgetapp.data.Transaction
 import com.depi.budgetapp.data.TransactionDao
 import com.depi.budgetapp.util.DateHelper
+import kotlinx.coroutines.flow.Flow
 
 class TransactionRepository(private val transactionDao: TransactionDao) {
 
+
     val allTransactions: LiveData<List<Transaction>> =
         transactionDao.getAllTransactions().asLiveData()
+
+
+
 
     suspend fun insert(transaction: Transaction) {
         transactionDao.insert(transaction)
@@ -94,4 +99,9 @@ class TransactionRepository(private val transactionDao: TransactionDao) {
             DateHelper.getStartOfYear(),
             DateHelper.getEndOfToday()
         ).asLiveData()
+
+    fun getTotalIncomeAmount() = transactionDao.getTotalIncomeAmount().asLiveData()
+    fun getTotalExpenseAmount() = transactionDao.getTotalExpenseAmount().asLiveData()
+
 }
+

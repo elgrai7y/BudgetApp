@@ -58,5 +58,13 @@ interface TransactionDao {
     @Query("SELECT * FROM transaction_table WHERE type = 'EXPENSE' AND date = :today")
     fun getTodayExpenseTransactions(today: Date): Flow<List<Transaction>>
 
+    // Get total amount for all income transactions
+    @Query("SELECT SUM(amount) FROM transaction_table WHERE type = 'INCOME'")
+    fun getTotalIncomeAmount(): Flow<Double?>
+
+    // Get total amount for all expense transactions
+    @Query("SELECT SUM(amount) FROM transaction_table WHERE type = 'EXPENSE'")
+    fun getTotalExpenseAmount(): Flow<Double?>
+
 
 }

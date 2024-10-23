@@ -62,7 +62,7 @@ class AddCategoryFragment : Fragment() {
                 TransactionType.INCOME,
                 transCategory,
 
-            )
+                )
             Toast.makeText(requireActivity(), "ok", Toast.LENGTH_SHORT).show()
 
             transvm.insert(category)

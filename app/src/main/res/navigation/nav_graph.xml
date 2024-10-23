@@ -1,57 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/nav_graph"
-        app:startDestination="@id/loadingFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loadingFragment">
     <fragment
-            android:id="@+id/loadingFragment"
-            android:name="com.depi.budgetapp.ui.LoadingFragment"
-            android:label="fragment_loading"
-            tools:layout="@layout/fragment_loading" >
+        android:id="@+id/loadingFragment"
+        android:name="com.depi.budgetapp.ui.LoadingFragment"
+        android:label="fragment_loading"
+        tools:layout="@layout/fragment_loading">
         <action
-                android:id="@+id/action_loadingFragment_to_mainFragment"
-                app:destination="@id/mainFragment"
-                app:popUpTo="@id/nav_graph" />
+            android:id="@+id/action_loadingFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/nav_graph" />
         <action
-                android:id="@+id/action_loadingFragment_to_homeFragment"
-                app:destination="@id/homeFragment" />
+            android:id="@+id/action_loadingFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
-            android:id="@+id/mainFragment"
-            android:name="com.depi.budgetapp.ui.MainFragment"
-            android:label="fragment_main"
-            tools:layout="@layout/fragment_main" >
+        android:id="@+id/mainFragment"
+        android:name="com.depi.budgetapp.ui.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main">
         <action
-                android:id="@+id/action_mainFragment_to_loginFragment"
-                app:destination="@id/loginFragment"
-                app:popUpTo="@id/mainFragment" />
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/mainFragment" />
         <action
-                android:id="@+id/action_mainFragment_to_sigupFragment"
-                app:destination="@id/sigupFragment" />
+            android:id="@+id/action_mainFragment_to_sigupFragment"
+            app:destination="@id/sigupFragment" />
     </fragment>
     <fragment
-            android:id="@+id/loginFragment"
-            android:name="com.depi.budgetapp.ui.LoginFragment"
-            android:label="fragment_login"
-            tools:layout="@layout/fragment_login" >
+        android:id="@+id/loginFragment"
+        android:name="com.depi.budgetapp.ui.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
         <action
-                android:id="@+id/action_loginFragment_to_sigupFragment"
-                app:destination="@id/sigupFragment"
-                app:popUpTo="@id/mainFragment" />
+            android:id="@+id/action_loginFragment_to_sigupFragment"
+            app:destination="@id/sigupFragment"
+            app:popUpTo="@id/mainFragment" />
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
     <fragment
-            android:id="@+id/sigupFragment"
-            android:name="com.depi.budgetapp.ui.SigupFragment"
-            android:label="fragment_sigup"
-            tools:layout="@layout/fragment_sigup" >
+        android:id="@+id/sigupFragment"
+        android:name="com.depi.budgetapp.ui.SigupFragment"
+        android:label="fragment_sigup"
+        tools:layout="@layout/fragment_sigup">
         <action
-                android:id="@+id/action_sigupFragment_to_loginFragment"
-                app:destination="@id/loginFragment"
-                app:popUpTo="@id/mainFragment" />
+            android:id="@+id/action_sigupFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/mainFragment" />
         <action
             android:id="@+id/action_sigupFragment_to_newWalletFragment3"
             app:destination="@id/newWalletFragment3" />
@@ -60,12 +59,21 @@
         android:id="@+id/newWalletFragment3"
         android:name="com.depi.budgetapp.NewWalletFragment"
         android:label="fragment_new_wallet"
+        tools:layout="@layout/fragment_new_wallet">
+        <action
+            android:id="@+id/action_newWalletFragment3_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newWalletFragment"
+        android:name="com.depi.budgetapp.NewWalletFragment"
+        android:label="fragment_new_wallet"
         tools:layout="@layout/fragment_new_wallet" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.depi.budgetapp.ui.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_editTransactionFragment"
             app:destination="@id/editTransactionFragment" />
@@ -82,7 +90,7 @@
         android:id="@+id/headerFragment2"
         android:name="com.depi.budgetapp.ui.HeaderFragment"
         android:label="fragment_header"
-        tools:layout="@layout/fragment_header" >
+        tools:layout="@layout/fragment_header">
         <action
             android:id="@+id/action_headerFragment2_to_profileFragment"
             app:destination="@id/profileFragment" />
@@ -90,17 +98,15 @@
             android:id="@+id/action_headerFragment2_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
-
     <fragment
         android:id="@+id/addCategoryFragment"
         android:name="com.depi.budgetapp.ui.AddCategoryFragment"
         android:label="fragment_add_category"
-        tools:layout="@layout/fragment_add_category" >
+        tools:layout="@layout/fragment_add_category">
         <action
             android:id="@+id/action_addCategoryFragment_to_manageCategoryFragment"
             app:destination="@id/manageCategoryFragment" />
     </fragment>
-
     <fragment
         android:id="@+id/addTransactionFragment"
         android:name="com.depi.budgetapp.ui.AddTransactionFragment"
@@ -110,7 +116,7 @@
         android:id="@+id/manageCategoryFragment"
         android:name="com.depi.budgetapp.ui.ManageCategoryFragment"
         android:label="fragment_manage_category"
-        tools:layout="@layout/fragment_manage_category" >
+        tools:layout="@layout/fragment_manage_category">
         <action
             android:id="@+id/action_manageCategoryFragment_to_addCategoryFragment"
             app:destination="@id/addCategoryFragment" />
@@ -119,10 +125,18 @@
         android:id="@+id/allTransactionFragment2"
         android:name="com.depi.budgetapp.ui.AllTransactionFragment"
         android:label="fragment_all_transaction2"
-        tools:layout="@layout/fragment_all_transaction2" />
+        tools:layout="@layout/fragment_all_transaction2">
+        <action
+            android:id="@+id/action_allTransactionFragment2_to_editTransactionFragment"
+            app:destination="@id/editTransactionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/editTransactionFragment"
         android:name="com.depi.budgetapp.ui.EditTransactionFragment"
         android:label="fragment_edit_transaction"
-        tools:layout="@layout/fragment_edit_transaction" />
+        tools:layout="@layout/fragment_edit_transaction">
+        <argument
+            android:name="currentTransaction"
+            app:argType="com.depi.budgetapp.data.Transaction" />
+    </fragment>
 </navigation>

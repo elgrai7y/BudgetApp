@@ -15,7 +15,7 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
 
     private var repository: TransactionRepository
 
-
+    lateinit var balance:LiveData<Double>
 
 
     //    private var _allTransactions: MutableLiveData<List<Transaction>> =  MutableLiveData<List<Transaction>>()
@@ -53,5 +53,6 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
     fun getWeeklyExpenseTransactions() = repository.getWeeklyExpenseTransactions()
     fun getMonthlyExpenseTransactions() = repository.getMonthlyExpenseTransactions()
     fun getYearlyExpenseTransactions() = repository.getYearlyExpenseTransactions()
-
+    fun getTotalIncomeAmount() = repository.getTotalIncomeAmount()
+    fun getTotalExpenseAmount() = repository.getTotalExpenseAmount()
 }

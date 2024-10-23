@@ -6,22 +6,23 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.depi.budgetapp.data.Transaction
 import com.depi.budgetapp.databinding.TransactionItemBinding
-import com.depi.budgetapp.ui.HomeFragment
 import com.depi.budgetapp.ui.OnItemClickListener
 import androidx.core.content.ContextCompat
 import android.graphics.Color
 import com.depi.budgetapp.R
 
+class TransactionAdapter(private val listener: OnItemClickListener) :
+    RecyclerView.Adapter<TransactionViewHolder>() {
+    private var transList = emptyList<Transaction>()
 
-class TransactionAdapter():RecyclerView.Adapter<TransactionViewHolder>() {
-    private var transList= emptyList<Transaction>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
-       val itemBinding=TransactionItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val itemBinding =
+            TransactionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TransactionViewHolder(itemBinding)
     }
 
-    override fun getItemCount()= transList.size
+    override fun getItemCount() = transList.size
 
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
         holder.transType.text= transList[position].type.toString()
@@ -31,13 +32,19 @@ class TransactionAdapter():RecyclerView.Adapter<TransactionViewHolder>() {
             holder.transType.setTextColor(Color.parseColor("#FF928A"))
             holder.transic.setImageResource(R.drawable.ic_expense)
         }
+        holder.itemView.setOnClickListener {
+            listener.onItemClick(transList[position])
+        }
     }
-    fun setData(user:List<Transaction>)
-    {
-        this.transList =user
+
+
+    fun setData(user: List<Transaction>) {
+        this.transList = user
+
         notifyDataSetChanged()
     }
 }
+
 
 
 class TransactionViewHolder(itemView: TransactionItemBinding):RecyclerView.ViewHolder(itemView.root)
@@ -47,6 +54,7 @@ val transType=itemView.transactionType
     val transCategory=itemView.transactionCategory
     val transBalance=itemView.transactionAmount
     val transic=itemView.icType
+
 
 
 }

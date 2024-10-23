@@ -1,7 +1,7 @@
 package com.depi.budgetapp.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +9,17 @@ import android.widget.Button
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.depi.budgetapp.R
-import com.depi.budgetapp.databinding.FragmentHomeBinding
 import com.depi.budgetapp.databinding.FragmentProfileBinding
+import com.depi.budgetapp.util.UserPreferences
+import com.depi.budgetapp.viewmodels.TransactionViewModel
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.launch
 
 
 class ProfileFragment : Fragment() {
@@ -22,6 +27,15 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var userPreferences: UserPreferences
+
+    private var userBalance: Double = 0.0
+    private var numofIncome = 0
+    private var numOfExpense = 0
+    private var pos = 0.0
+    private var neg = 0.0
+    private lateinit var transvm: TransactionViewModel
+
 
     override fun onCreateView(
 
@@ -90,10 +104,71 @@ class ProfileFragment : Fragment() {
             // Close the navigation drawer
             drawerLayout.closeDrawer(GravityCompat.START)
         }
-binding.bottomNavigation.setupWithNavController( findNavController())
+        binding.bottomNavigation.setupWithNavController(findNavController())
+
+
+        transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
+
+        transvm.getIncomeTransactions().observe(viewLifecycleOwner) { it ->
+            numofIncome = it.size
+            binding.numi.text = numofIncome.toString()
+        }
+
+        transvm.getExpenseTransactions().observe(viewLifecycleOwner) {
+            numOfExpense = it.size
+            binding.nume.text = numOfExpense.toString()
+
+        }
+
+        userPreferences = UserPreferences.getInstance(requireContext())
+
+
+        transvm.getTotalIncomeAmount().observe(viewLifecycleOwner) {
+         pos=it?: 0.0
+           this.userBalance +=it.toString().toDouble()
+            lifecycleScope.launch {
+                userPreferences.balance.collect {
+                    balance ->userBalance
+                    binding.walletBalance.text = userBalance.toString()
+                }
+            }
+        }
+        transvm.getTotalExpenseAmount().observe(viewLifecycleOwner) {
+            neg=it?: 0.0
+            this.userBalance -=it.toString().toDouble()
+            lifecycleScope.launch {
+                userPreferences.balance.collect {
+                    balance ->userBalance
+                    binding.walletBalance.text = userBalance.toString()
+                }
+            }
+        }
+
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        lifecycleScope.launch {
+            userPreferences.username.collect { username ->
+                binding.username.text = username
+
+            }
+        }
+
+        lifecycleScope.launch {
+            userPreferences.email.collect { email ->
+                binding.emailTv.text = email
+            }
+        }
 
 
+//        binding.walletBalance.text = netBalance().toString()
+    }
+
+
+    private fun netBalance(): Double {
+        return 0.0
+    }
 }

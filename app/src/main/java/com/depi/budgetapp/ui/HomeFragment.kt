@@ -1,5 +1,6 @@
 package com.depi.budgetapp.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -17,17 +18,30 @@ import com.depi.budgetapp.databinding.FragmentHomeBinding
 import com.google.android.material.navigation.NavigationView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.depi.budgetapp.adapters.TransactionAdapter
 import com.depi.budgetapp.data.Transaction
+import com.depi.budgetapp.util.UserPreferences
 import com.depi.budgetapp.viewmodels.TransactionViewModel
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import kotlinx.coroutines.launch
 
-class HomeFragment : Fragment()   {
+class HomeFragment : Fragment(),OnItemClickListener   {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var transvm: TransactionViewModel
+    private lateinit var userPreferences: UserPreferences
+    private var pos = 0.0
+    private var neg = 0.0
+    private var userBalance: Double = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +49,31 @@ class HomeFragment : Fragment()   {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        userPreferences = UserPreferences.getInstance(requireContext())
+
+        transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
+
+        transvm.getTotalIncomeAmount().observe(viewLifecycleOwner) {
+            pos=it?: 0.0
+            this.userBalance +=it.toString().toDouble()
+            lifecycleScope.launch {
+                userPreferences.balance.collect {
+                        balance ->userBalance
+                    binding.walletBalance.text = userBalance.toString()
+                }
+            }
+        }
+        transvm.getTotalExpenseAmount().observe(viewLifecycleOwner) {
+            neg=it?: 0.0
+            this.userBalance -=it.toString().toDouble()
+            lifecycleScope.launch {
+                userPreferences.balance.collect {
+                        balance ->userBalance
+                    binding.walletBalance.text = userBalance.toString()
+                }
+            }
+        }
 
 
         binding.toolbar.setNavigationOnClickListener {
@@ -95,7 +134,7 @@ class HomeFragment : Fragment()   {
             // Close the navigation drawer
         }
 
-/*
+
         val lineChart = binding.lineChart  // No need to use findViewById
 
 
@@ -174,16 +213,16 @@ class HomeFragment : Fragment()   {
         lineChart.setBackgroundColor(Color.BLACK)  // Background color
         lineChart.setDrawGridBackground(false)  // No grid background
         lineChart.description.isEnabled = false  // Disable the description label
-        lineChart.legend.textColor=Color.WHITE
+        lineChart.legend.textColor= Color.WHITE
 
         lineChart.legend.orientation = Legend.LegendOrientation.HORIZONTAL  // Set the legend orientation
         lineChart.legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM  // Position at the bottom
         lineChart.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
         lineChart.legend.form = Legend.LegendForm.CIRCLE  // Choose the line form for the legend
         lineChart.invalidate()
-*/
 
-        val adapter=TransactionAdapter()
+
+        val adapter=TransactionAdapter(this)
         val recyclerview=binding.transRv
         recyclerview.adapter=adapter
         recyclerview.layoutManager=LinearLayoutManager(requireContext())
@@ -192,12 +231,15 @@ class HomeFragment : Fragment()   {
             trans->adapter.setData(trans)
         })
 
-
-
         binding.bottomNavigation.setupWithNavController( findNavController())
 
         return binding.root
 }
+    override fun onItemClick(transaction: Transaction) {
+        val action = HomeFragmentDirections.actionHomeFragmentToEditTransactionFragment(transaction)
+       findNavController().navigate(action)
+
+    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (toggle.onOptionsItemSelected(item)) {
             true

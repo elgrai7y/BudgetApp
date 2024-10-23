@@ -16,12 +16,14 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.depi.budgetapp.R
 import com.depi.budgetapp.adapters.TransactionAdapter
+import com.depi.budgetapp.data.Category
+import com.depi.budgetapp.data.Transaction
 import com.depi.budgetapp.databinding.FragmentAllTransaction2Binding
 import com.depi.budgetapp.viewmodels.TransactionViewModel
 import com.google.android.material.navigation.NavigationView
 
 
-class AllTransactionFragment : Fragment() {
+class AllTransactionFragment : Fragment(), OnItemClickListener {
     private lateinit var binding: FragmentAllTransaction2Binding
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
@@ -95,7 +97,7 @@ class AllTransactionFragment : Fragment() {
         }
 
 
-        val adapter= TransactionAdapter()
+        val adapter= TransactionAdapter(this)
         val recyclerview=binding.transRv
         recyclerview.adapter=adapter
         recyclerview.layoutManager= LinearLayoutManager(requireContext())
@@ -107,7 +109,7 @@ class AllTransactionFragment : Fragment() {
 
 
         binding.editIncomeButton.setOnClickListener(View.OnClickListener {
-            val adapter= TransactionAdapter()
+            val adapter= TransactionAdapter(this)
             val recyclerview=binding.transRv
             recyclerview.adapter=adapter
             recyclerview.layoutManager= LinearLayoutManager(requireContext())
@@ -117,7 +119,7 @@ class AllTransactionFragment : Fragment() {
             })
         })
         binding.editExpenseButton .setOnClickListener(View.OnClickListener {
-            val adapter= TransactionAdapter()
+            val adapter= TransactionAdapter(this)
             val recyclerview=binding.transRv
             recyclerview.adapter=adapter
             recyclerview.layoutManager= LinearLayoutManager(requireContext())
@@ -129,5 +131,12 @@ class AllTransactionFragment : Fragment() {
 
         return binding.root }
 
+
+    override fun onItemClick(transaction: Transaction) {
+        val action = AllTransactionFragmentDirections.actionAllTransactionFragment2ToEditTransactionFragment(transaction)
+
+        findNavController().navigate(action)
+
+    }
 
 }
