@@ -32,6 +32,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import com.depi.budgetapp.databinding.FragmentEditTransactionBinding
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
+import com.depi.budgetapp.repo.AuthRepository
+import com.depi.budgetapp.viewmodels.AuthViewModel
+import com.depi.budgetapp.viewmodels.AuthViewModelFactory
 
 
 class EditTransactionFragment : Fragment() {
@@ -45,6 +49,11 @@ class EditTransactionFragment : Fragment() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var transvm: TransactionViewModel
     private val args by navArgs<EditTransactionFragmentArgs>()
+
+    private lateinit var authRepository: AuthRepository
+    private val authViewModel: AuthViewModel by viewModels {
+        AuthViewModelFactory(authRepository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -110,6 +119,12 @@ class EditTransactionFragment : Fragment() {
 
             // Close the navigation drawer
             drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        val headerButton5: Button = headerView.findViewById(R.id.logout)
+        headerButton5.setOnClickListener{
+            authViewModel.signOut()
+            findNavController().navigate(R.id.mainFragment)
         }
 
         transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)

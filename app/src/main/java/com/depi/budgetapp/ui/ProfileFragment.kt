@@ -10,15 +10,20 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.depi.budgetapp.R
 import com.depi.budgetapp.databinding.FragmentProfileBinding
+import com.depi.budgetapp.repo.AuthRepository
 import com.depi.budgetapp.util.UserPreferences
+import com.depi.budgetapp.viewmodels.AuthViewModel
+import com.depi.budgetapp.viewmodels.AuthViewModelFactory
 import com.depi.budgetapp.viewmodels.TransactionViewModel
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -35,6 +40,12 @@ class ProfileFragment : Fragment() {
     private var pos = 0.0
     private var neg = 0.0
     private lateinit var transvm: TransactionViewModel
+    private lateinit var authRepository: AuthRepository
+
+    //    private lateinit var authViewModel: AuthViewModel
+    private val authViewModel: AuthViewModel by viewModels {
+        AuthViewModelFactory(authRepository)
+    }
 
 
     override fun onCreateView(
@@ -54,7 +65,7 @@ class ProfileFragment : Fragment() {
             }
         }
 
-
+        authRepository = AuthRepository()
         toggle =
             ActionBarDrawerToggle(activity, binding.drawable, R.string.nav_open, R.string.nav_close)
         binding.drawable.addDrawerListener(toggle)
@@ -104,6 +115,12 @@ class ProfileFragment : Fragment() {
             // Close the navigation drawer
             drawerLayout.closeDrawer(GravityCompat.START)
         }
+
+        val headerButton5: Button = headerView.findViewById(R.id.logout)
+        headerButton5.setOnClickListener{
+            authViewModel.signOut()
+            findNavController().navigate(R.id.mainFragment)
+        }
         binding.bottomNavigation.setupWithNavController(findNavController())
 
 
@@ -141,6 +158,13 @@ class ProfileFragment : Fragment() {
                     balance ->userBalance
                     binding.walletBalance.text = userBalance.toString()
                 }
+            }
+        }
+
+        lifecycleScope.launch {
+
+            userPreferences.walletName.collect{walletName->
+                binding.currWallet.text = walletName
             }
         }
 
