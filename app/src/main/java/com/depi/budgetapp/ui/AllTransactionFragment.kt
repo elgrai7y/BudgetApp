@@ -9,6 +9,7 @@ import android.widget.Button
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,9 @@ import com.depi.budgetapp.adapters.TransactionAdapter
 import com.depi.budgetapp.data.Category
 import com.depi.budgetapp.data.Transaction
 import com.depi.budgetapp.databinding.FragmentAllTransaction2Binding
+import com.depi.budgetapp.repo.AuthRepository
+import com.depi.budgetapp.viewmodels.AuthViewModel
+import com.depi.budgetapp.viewmodels.AuthViewModelFactory
 import com.depi.budgetapp.viewmodels.TransactionViewModel
 import com.google.android.material.navigation.NavigationView
 
@@ -29,13 +33,19 @@ class AllTransactionFragment : Fragment(), OnItemClickListener {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var transvm: TransactionViewModel
 
+    private lateinit var  authRepository: AuthRepository
+
+    private val authViewModel: AuthViewModel by viewModels {
+        AuthViewModelFactory(authRepository)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentAllTransaction2Binding.inflate(inflater, container, false)
 
-
+        authRepository = AuthRepository()
         binding.toolbar.setNavigationOnClickListener {
             if (binding.drawable.isDrawerOpen(GravityCompat.START)) {
                 binding.drawable.closeDrawer(GravityCompat.START)
@@ -93,6 +103,12 @@ class AllTransactionFragment : Fragment(), OnItemClickListener {
 
             // Close the navigation drawer
             drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        val headerButton5: Button = headerView.findViewById(R.id.logout)
+        headerButton5.setOnClickListener{
+            authViewModel.signOut()
+            findNavController().navigate(R.id.mainFragment)
         }
 
 

@@ -40,7 +40,7 @@
     <string name="profile">Profile</string>
     <string name="hello">Hello,</string>
     <string name="curr_wallet">Current Wallet,</string>
-    <string name="income_num">Icome\nTransactions</string>
+    <string name="income_num">Income\nTransactions</string>
     <string name="expense_num">Expense\nTransactions</string>
 
 

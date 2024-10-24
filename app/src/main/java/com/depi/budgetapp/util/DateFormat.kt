@@ -12,7 +12,7 @@ fun formatDate(date: Date): String {
 fun parseDate(dateString: String): Date {
     val formatter = SimpleDateFormat("dd/MM/yy")
 
-        return formatter.parse(dateString)
+    return formatter.parse(dateString)
 
 
-    }
+}

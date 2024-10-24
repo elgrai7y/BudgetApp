@@ -6,10 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.depi.budgetapp.databinding.FragmentNewWalletBinding
+import com.depi.budgetapp.repo.AuthRepository
 import com.depi.budgetapp.util.UserPreferences
+import com.depi.budgetapp.viewmodels.AuthViewModel
+import com.depi.budgetapp.viewmodels.AuthViewModelFactory
 import kotlinx.coroutines.launch
 
 
@@ -18,6 +22,8 @@ class NewWalletFragment : Fragment() {
     private lateinit var binding: FragmentNewWalletBinding
 
     private lateinit var userPreferences: UserPreferences
+
+
 
 
     override fun onCreateView(
@@ -48,7 +54,6 @@ class NewWalletFragment : Fragment() {
             lifecycleScope.launch {
 
                 userPreferences.saveUserWalletName(walletName)
-
             }
             lifecycleScope.launch {
                 userPreferences.saveUserBalance(balance.toDouble())

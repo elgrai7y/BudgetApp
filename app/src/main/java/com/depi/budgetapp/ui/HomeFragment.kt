@@ -12,6 +12,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.depi.budgetapp.R
 import com.depi.budgetapp.databinding.FragmentHomeBinding
@@ -23,7 +24,10 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.depi.budgetapp.adapters.TransactionAdapter
 import com.depi.budgetapp.data.Transaction
+import com.depi.budgetapp.repo.AuthRepository
 import com.depi.budgetapp.util.UserPreferences
+import com.depi.budgetapp.viewmodels.AuthViewModel
+import com.depi.budgetapp.viewmodels.AuthViewModelFactory
 import com.depi.budgetapp.viewmodels.TransactionViewModel
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
@@ -31,6 +35,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment(),OnItemClickListener   {
@@ -43,6 +48,12 @@ class HomeFragment : Fragment(),OnItemClickListener   {
     private var neg = 0.0
     private var userBalance: Double = 0.0
 
+    private lateinit var authRepository: AuthRepository
+
+    private val authViewModel: AuthViewModel by viewModels {
+        AuthViewModelFactory(authRepository)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,8 +61,7 @@ class HomeFragment : Fragment(),OnItemClickListener   {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-
-
+        transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
 
         binding.toolbar.setNavigationOnClickListener {
             if (binding.drawable.isDrawerOpen(GravityCompat.START)) {
@@ -70,7 +80,7 @@ class HomeFragment : Fragment(),OnItemClickListener   {
 
         binding.showTv.setOnClickListener(View.OnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_allTransactionFragment2)
-         })
+        })
 
 
 
@@ -111,7 +121,11 @@ class HomeFragment : Fragment(),OnItemClickListener   {
             // Close the navigation drawer
         }
 
-
+        val headerButton5: Button = headerView.findViewById(R.id.logout)
+        headerButton5.setOnClickListener{
+            authViewModel.signOut()
+            findNavController().navigate(R.id.mainFragment)
+        }
         val lineChart = binding.lineChart  // No need to use findViewById
 
 
@@ -205,39 +219,55 @@ class HomeFragment : Fragment(),OnItemClickListener   {
         recyclerview.layoutManager=LinearLayoutManager(requireContext())
         transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
         transvm.allTransactions.observe(viewLifecycleOwner, Observer {
-            trans->adapter.setData(trans)
+                trans->adapter.setData(trans)
         })
 
 
+
+
+        authRepository = AuthRepository()
+
         userPreferences = UserPreferences.getInstance(requireContext())
 
-
         transvm.getTotalIncomeAmount().observe(viewLifecycleOwner) {
-            pos = it ?: 0.0
-            this.userBalance += it.toString().toDouble()
+            pos=it?: 0.0
+            this.userBalance +=it.toString().toDouble()
             lifecycleScope.launch {
-                userPreferences.balance.collect { balance ->
-                    userBalance
+                userPreferences.balance.collect {
+                        balance ->userBalance
                     binding.walletBalance.text = userBalance.toString()
                 }
             }
         }
         transvm.getTotalExpenseAmount().observe(viewLifecycleOwner) {
-            neg = it ?: 0.0
-            this.userBalance -= it.toString().toDouble()
+            neg=it?: 0.0
+            this.userBalance -=it.toString().toDouble()
             lifecycleScope.launch {
-                userPreferences.balance.collect { balance ->
-                    userBalance
+                userPreferences.balance.collect {
+                        balance ->userBalance
                     binding.walletBalance.text = userBalance.toString()
                 }
             }
         }
 
+        lifecycleScope.launch {
+            userPreferences.walletName.collect{walletName->
+                binding.walletNameTv.text = walletName
+            }
+        }
+
+
+
+
+
+
+
+
         return binding.root
-}
+    }
     override fun onItemClick(transaction: Transaction) {
         val action = HomeFragmentDirections.actionHomeFragmentToEditTransactionFragment(transaction)
-       findNavController().navigate(action)
+        findNavController().navigate(action)
 
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -249,6 +279,5 @@ class HomeFragment : Fragment(),OnItemClickListener   {
 
 
 }
-
 
 

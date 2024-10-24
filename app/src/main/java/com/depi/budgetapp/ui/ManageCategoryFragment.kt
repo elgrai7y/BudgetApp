@@ -9,6 +9,7 @@ import android.widget.Button
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -21,6 +22,9 @@ import com.depi.budgetapp.data.Category
 import com.depi.budgetapp.databinding.FragmentAddCategoryBinding
 import com.depi.budgetapp.databinding.FragmentAddTransactionBinding
 import com.depi.budgetapp.databinding.FragmentManageCategoryBinding
+import com.depi.budgetapp.repo.AuthRepository
+import com.depi.budgetapp.viewmodels.AuthViewModel
+import com.depi.budgetapp.viewmodels.AuthViewModelFactory
 import com.depi.budgetapp.viewmodels.CategoryViewModel
 import com.depi.budgetapp.viewmodels.TransactionViewModel
 import com.google.android.material.navigation.NavigationView
@@ -32,6 +36,12 @@ class ManageCategoryFragment : Fragment(), OnCategoryClickListener {
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var transvm: CategoryViewModel
+
+    private lateinit var authRepository: AuthRepository
+
+    private val authViewModel: AuthViewModel by viewModels {
+        AuthViewModelFactory(authRepository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -102,6 +112,12 @@ class ManageCategoryFragment : Fragment(), OnCategoryClickListener {
 
             // Close the navigation drawer
             drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        val headerButton5: Button = headerView.findViewById(R.id.logout)
+        headerButton5.setOnClickListener{
+            authViewModel.signOut()
+            findNavController().navigate(R.id.mainFragment)
         }
 
 

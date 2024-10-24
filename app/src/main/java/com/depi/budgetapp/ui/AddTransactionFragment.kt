@@ -17,6 +17,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -25,11 +26,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.depi.budgetapp.R
 import com.depi.budgetapp.adapters.CategoryAdapter
-import com.depi.budgetapp.adapters.TransactionAdapter
 import com.depi.budgetapp.data.Category
 import com.depi.budgetapp.data.Transaction
 import com.depi.budgetapp.data.TransactionType
 import com.depi.budgetapp.databinding.FragmentAddTransactionBinding
+import com.depi.budgetapp.repo.AuthRepository
+import com.depi.budgetapp.viewmodels.AuthViewModel
+import com.depi.budgetapp.viewmodels.AuthViewModelFactory
 import com.depi.budgetapp.viewmodels.CategoryViewModel
 import com.depi.budgetapp.viewmodels.TransactionViewModel
 import com.depi.budgetapp.viewmodels.TransactionViewModelFactory
@@ -40,7 +43,7 @@ import java.util.Locale
 
 
 @AddTransactionFragment.AndroidEntryPoint
-class AddTransactionFragment : Fragment(),OnCategoryClickListener {
+class AddTransactionFragment : Fragment(), OnCategoryClickListener {
     annotation class AndroidEntryPoint
 
     private lateinit var binding: FragmentAddTransactionBinding
@@ -54,6 +57,12 @@ class AddTransactionFragment : Fragment(),OnCategoryClickListener {
     private lateinit var transvm: TransactionViewModel
     private var isincome: Boolean? = null
     private lateinit var transvm2: CategoryViewModel
+
+    private lateinit var authRepository: AuthRepository
+
+    private val authViewModel: AuthViewModel by viewModels {
+        AuthViewModelFactory(authRepository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -131,6 +140,12 @@ class AddTransactionFragment : Fragment(),OnCategoryClickListener {
             drawerLayout.closeDrawer(GravityCompat.START)
         }
 
+        val headerButton5: Button = headerView.findViewById(R.id.logout)
+        headerButton5.setOnClickListener {
+            authViewModel.signOut()
+            findNavController().navigate(R.id.mainFragment)
+        }
+
 
         return binding.root
     }
@@ -146,7 +161,7 @@ class AddTransactionFragment : Fragment(),OnCategoryClickListener {
 
 
 
-        if (transBalance != null && transDate != null && isincome == true) {
+        if (transBalance != null && transDate != null && isincome == true&&transCategory!=null) {
             val transaction = Transaction(
                 0,
                 TransactionType.INCOME,
@@ -161,7 +176,7 @@ class AddTransactionFragment : Fragment(),OnCategoryClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
 
         }
-        else if(transBalance != null && transDate != null && isincome == false) {
+      else if (transBalance != null && transDate != null && isincome == false&&transCategory!=null) {
             val transaction = Transaction(
                 0,
                 TransactionType.EXPENSE,
@@ -180,8 +195,9 @@ class AddTransactionFragment : Fragment(),OnCategoryClickListener {
             Toast.makeText(requireActivity(), "complete info please", Toast.LENGTH_SHORT).show()
 
         }
+        }
 
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -253,12 +269,12 @@ class AddTransactionFragment : Fragment(),OnCategoryClickListener {
         bottomSheetDialog.setContentView(sheetView)
         val recyclerView: RecyclerView = sheetView.findViewById(R.id.trans_rv)
 
-        val adapter= CategoryAdapter(this)
-        recyclerView.adapter=adapter
+        val adapter = CategoryAdapter(this)
+        recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         transvm2 = ViewModelProvider(this).get(CategoryViewModel::class.java)
-        transvm2.allCategories.observe(viewLifecycleOwner, Observer {
-                cate->adapter.setData(cate)
+        transvm2.allCategories.observe(viewLifecycleOwner, Observer { cate ->
+            adapter.setData(cate)
         })
 
         bottomSheetDialog.setContentView(sheetView)
@@ -267,7 +283,7 @@ class AddTransactionFragment : Fragment(),OnCategoryClickListener {
     }
 
     override fun onCategoryClick(category: Category) {
-        binding.categoryName.text=category.categoryname
+        binding.categoryName.text = category.categoryname
         bottomSheetDialog.dismiss()
     }
 

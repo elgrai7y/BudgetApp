@@ -9,27 +9,13 @@
     tools:context=".ui.AddTransactionFragment">
 
     <androidx.drawerlayout.widget.DrawerLayout
-
         android:id="@+id/drawable"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <!-- Main content layout with Toolbar and other content -->
-
-        <!-- NavigationView for the drawer -->
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <!-- Toolbar at the top of the screen -->
-
-
-            <!-- Content goes here -->
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -57,220 +43,201 @@
                     android:layout_gravity="end|center"
                     android:layout_marginEnd="10dp"
                     android:src="@drawable/main_portrait" />
-
             </androidx.appcompat.widget.Toolbar>
 
-
-            <LinearLayout
-                android:paddingTop="20dp"
-                android:id="@+id/content_frame"
-                android:layout_width="369dp"
-                android:layout_height="602dp"
-                android:orientation="vertical"
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/toolbar"
-                app:layout_constraintVertical_bias="0.0"
-                tools:ignore="MissingConstraints">
-
+                app:layout_constraintTop_toBottomOf="@id/toolbar">
 
                 <LinearLayout
+                    android:id="@+id/content_frame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-4dp"
-                    android:layout_marginBottom="8dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <!-- Income Button -->
-                    <Button
-                        android:id="@+id/edit_income_button"
-                        android:layout_width="170dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#5729662C"
-                        android:padding="10dp"
-                        android:text="Income"
-                        android:textColor="#6FFF74"
-                        android:textSize="23sp" />
-
-                    <!-- Expense Button -->
-                    <Button
-                        android:id="@+id/edit_expense_button"
-                        android:layout_width="170dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:backgroundTint="#4DAB3A3A"
-                        android:padding="10dp"
-                        android:text="Expense"
-                        android:textColor="#FDA09A"
-                        android:textSize="23sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <LinearLayout
-                        android:id="@+id/edit_category_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/input_style"
-                        android:clickable="true"
-                        android:focusable="true"
-
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="7dp"
-                            android:src="@drawable/category_icon" />
-
-                        <TextView
-                            android:id="@+id/category_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="3dp"
-                            android:text="@string/category"
-                            android:textColor="@color/white"
-                            android:textSize="15sp" />
-
-                        <TextView
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/change"
-                            android:textColor="@color/light_gray"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/edit_date_picker_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/input_style"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="10dp"
-                            android:src="@drawable/calender_icon" />
-
-                        <TextView
-                            android:id="@+id/edit_selected_date_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="3dp"
-                            android:text="10/12/2024"
-                            android:textColor="@color/white"
-                            android:textSize="15sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/change"
-                            android:textColor="@color/light_gray"
-                            android:textSize="12sp" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-45dp"
-                    android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="10dp">
+                    android:gravity="center"
+                    android:paddingTop="20dp">
 
-
-                    <RelativeLayout
-                        android:id="@+id/edit_relative_layout"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_marginTop="38dp"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="16dp">
+                        android:layout_marginTop="-4dp"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                        <EditText
-                            android:id="@+id/edit_balance_edit_text"
-                            android:layout_width="match_parent"
+                        <Button
+                            android:id="@+id/edit_income_button"
+                            android:layout_width="170dp"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/input_style"
-                            android:hint="Balance"
-                            android:gravity="center"
+                            android:backgroundTint="#5729662C"
+                            android:padding="10dp"
+                            android:text="Income"
+                            android:textColor="#6FFF74"
+                            android:textSize="23sp" />
 
-                            android:inputType="numberDecimal"
-                            android:padding="12dp"
-                            android:textColor="#fff"
-                            android:textColorHint="#C1BFBF"
-                            android:textSize="22sp" />
+                        <Button
+                            android:id="@+id/edit_expense_button"
+                            android:layout_width="170dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:backgroundTint="#4DAB3A3A"
+                            android:padding="10dp"
+                            android:text="Expense"
+                            android:textColor="#FDA09A"
+                            android:textSize="23sp" />
+                    </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/edit_dollar_icon"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:id="@+id/edit_category_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="100dp"
-                            android:src="@drawable/dollar_sign_svgrepo_com" />
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/input_style"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp">
 
-                    </RelativeLayout>
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="7dp"
+                                android:src="@drawable/category_icon" />
 
+                            <TextView
+                                android:id="@+id/category_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="3dp"
+                                android:text="@string/category"
+                                android:textColor="@color/white"
+                                android:textSize="15sp" />
 
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/change"
+                                android:textColor="@color/light_gray"
+                                android:textSize="12sp" />
+                        </LinearLayout>
 
-                    <Button
-                        android:id="@+id/add_btn"
-                        android:layout_width="345dp"
+                        <LinearLayout
+                            android:id="@+id/edit_date_picker_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="@drawable/input_style"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="10dp"
+                                android:src="@drawable/calender_icon" />
+
+                            <TextView
+                                android:id="@+id/edit_selected_date_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="3dp"
+                                android:text="10/12/2024"
+                                android:textColor="@color/white"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/change"
+                                android:textColor="@color/light_gray"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:background="@drawable/rounded_button_background"
-                        android:text="Create"
-                        android:textColor="#000"
-                        android:textSize="25sp"
-                         />
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
+                        <RelativeLayout
+                            android:id="@+id/edit_relative_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_marginTop="38dp"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="16dp">
+
+                            <EditText
+                                android:id="@+id/edit_balance_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/input_style"
+                                android:hint="Balance"
+                                android:gravity="center"
+                                android:inputType="numberDecimal"
+                                android:padding="12dp"
+                                android:textColor="#fff"
+                                android:textColorHint="#C1BFBF"
+                                android:textSize="22sp" />
+
+                            <ImageView
+                                android:id="@+id/edit_dollar_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="100dp"
+                                android:src="@drawable/dollar_sign_svgrepo_com" />
+                        </RelativeLayout>
+
+                        <Button
+                            android:id="@+id/add_btn"
+                            android:layout_width="345dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:background="@drawable/rounded_button_background"
+                            android:text="Create"
+                            android:textColor="#000"
+                            android:textSize="25sp" />
+                    </LinearLayout>
                 </LinearLayout>
-
-
-            </LinearLayout>
-
-
+            </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
@@ -280,9 +247,6 @@
             android:background="@color/black"
             app:itemTextAppearance="@style/CustomNavViewStyle"
             app:itemIconTint="@color/black"
-            app:headerLayout="@layout/fragment_header"
-            />
-
-
+            app:headerLayout="@layout/fragment_header" />
     </androidx.drawerlayout.widget.DrawerLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

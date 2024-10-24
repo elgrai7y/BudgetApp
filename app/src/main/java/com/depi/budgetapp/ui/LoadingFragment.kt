@@ -52,7 +52,7 @@ class LoadingFragment : Fragment() {
         lifecycleScope.launchWhenStarted {
             authViewMode.isAuthenticated.collect { isAuthenticated ->
                 when (isAuthenticated) {
-                    true -> findNavController().navigate(R.id.action_loadingFragment_to_homeFragment)
+                    true -> findNavController().navigate(R.id.action_loadingFragment_to_allTransactionFragment2)
                     false -> findNavController().navigate(R.id.action_loadingFragment_to_mainFragment)
                     else ->{
 

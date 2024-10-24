@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -32,24 +33,43 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import com.depi.budgetapp.databinding.FragmentEditTransactionBinding
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.depi.budgetapp.adapters.CategoryAdapter
+import com.depi.budgetapp.data.Category
+import com.depi.budgetapp.repo.AuthRepository
+import com.depi.budgetapp.viewmodels.AuthViewModel
+import com.depi.budgetapp.viewmodels.AuthViewModelFactory
+import com.depi.budgetapp.viewmodels.CategoryViewModel
+import java.util.Locale
 
 
-class EditTransactionFragment : Fragment() {
+class EditTransactionFragment : Fragment(), OnCategoryClickListener {
 
     private lateinit var selectedDateText: TextView
     private lateinit var dollarIcon: ImageView
     private lateinit var balanceEditText: EditText
     private lateinit var binding: FragmentEditTransactionBinding
-
+    private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var transvm: TransactionViewModel
     private val args by navArgs<EditTransactionFragmentArgs>()
+    private var isincome: Boolean? = null
+    private lateinit var transvm2: CategoryViewModel
+    private lateinit var authRepository: AuthRepository
+    private val authViewModel: AuthViewModel by viewModels {
+        AuthViewModelFactory(authRepository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentEditTransactionBinding.inflate(inflater, container, false)
+
+
 
 
         binding.toolbar.setNavigationOnClickListener {
@@ -111,6 +131,12 @@ class EditTransactionFragment : Fragment() {
             drawerLayout.closeDrawer(GravityCompat.START)
         }
 
+        val headerButton5: Button = headerView.findViewById(R.id.logout)
+        headerButton5.setOnClickListener{
+            authViewModel.signOut()
+            findNavController().navigate(R.id.mainFragment)
+        }
+
         transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
 
 
@@ -119,6 +145,15 @@ class EditTransactionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val clickListener = View.OnClickListener { view ->
+
+            when (view.getId()) {
+                R.id.edit_income_button -> isincome = true
+                R.id.edit_expense_button -> isincome = false
+            }
+        }
+        binding.editIncomeButton.setOnClickListener(clickListener)
+        binding.editExpenseButton.setOnClickListener(clickListener)
         // Initialize views
         selectedDateText = view.findViewById(R.id.edit_selected_date_text)
         dollarIcon = view.findViewById(R.id.edit_dollar_icon)
@@ -189,15 +224,31 @@ class EditTransactionFragment : Fragment() {
 
     // Function to show the Category selection bottom sheet
     private fun showCategoryBottomSheet() {
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
-        val sheetView: View = LayoutInflater.from(requireContext())
+        val sheetView = LayoutInflater.from(requireContext())
             .inflate(R.layout.category_bottom_sheet, null)
+
+        // Create the BottomSheetDialog
+        bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog.setContentView(sheetView)
+        val recyclerView: RecyclerView = sheetView.findViewById(R.id.trans_rv)
+
+        val adapter = CategoryAdapter(this)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        transvm2 = ViewModelProvider(this).get(CategoryViewModel::class.java)
+        transvm2.allCategories.observe(viewLifecycleOwner, Observer { cate ->
+            adapter.setData(cate)
+        })
 
         bottomSheetDialog.setContentView(sheetView)
         bottomSheetDialog.setCanceledOnTouchOutside(true)
         bottomSheetDialog.show()
     }
 
+    override fun onCategoryClick(category: Category) {
+        binding.categoryName.text = category.categoryname
+        bottomSheetDialog.dismiss()
+    }
     private fun editeAlart() {
 
         val builder = AlertDialog.Builder(requireContext())
@@ -215,11 +266,8 @@ class EditTransactionFragment : Fragment() {
 
 
                 dialog, which -> dialog.dismiss()
-            val amount:Double = binding.editBalanceEditText.text.toString().toDouble()
-            val date:Date = parseDate(binding.editSelectedDateText.text.toString())
-            val currentTransaction = Transaction(amount = amount, date = date, category = args.currentTransaction.category, type = TransactionType.INCOME, id = args.currentTransaction.id)
 
-            transvm.update(currentTransaction)
+            edite()
             requireActivity().onBackPressedDispatcher.onBackPressed()
 
         }
@@ -255,9 +303,9 @@ class EditTransactionFragment : Fragment() {
                 dialog, which -> dialog.dismiss()
             val amount:Double = binding.editBalanceEditText.text.toString().toDouble()
             val date:Date = parseDate(binding.editSelectedDateText.text.toString())
-            val currentTransaction = Transaction(amount = amount, date = date, category = args.currentTransaction.category, type = TransactionType.INCOME, id = args.currentTransaction.id)
-
-            transvm.delete(currentTransaction)
+            val category=binding.categoryName.text.toString()
+            val currentTransaction = Transaction(amount = amount, date = date, category = category, type = args.currentTransaction.type, id = args.currentTransaction.id)
+             transvm.delete(currentTransaction)
             requireActivity().onBackPressedDispatcher.onBackPressed()
 
         }
@@ -274,6 +322,51 @@ class EditTransactionFragment : Fragment() {
         alertDialog.show()
     }
 
+
+    private fun edite() {
+
+        val transBalance = binding.editBalanceEditText.text.toString().toDoubleOrNull()
+        val transCategory = binding.categoryName.text.toString()
+        val selectedDateString = binding.editSelectedDateText.text.toString()
+
+        val transDate: Date =
+            android.icu.text.SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(selectedDateString)
+
+
+
+        if (transBalance != null && transDate != null && isincome == true&&transCategory!=null) {
+            val transaction = Transaction(
+                args.currentTransaction.id,
+                TransactionType.INCOME,
+                transCategory,
+                transBalance,
+                transDate
+            )
+
+
+            transvm.update(transaction)
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+
+        }
+        else if (transBalance != null && transDate != null && isincome == false&&transCategory!=null) {
+            val transaction = Transaction(
+                args.currentTransaction.id,
+                TransactionType.EXPENSE,
+                transCategory,
+                transBalance,
+                transDate
+            )
+
+            transvm.update(transaction)
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+
+        }
+
+        else {
+            Toast.makeText(requireActivity(), "complete info please ${isincome}", Toast.LENGTH_SHORT).show()
+
+        }
+    }
 
 
 

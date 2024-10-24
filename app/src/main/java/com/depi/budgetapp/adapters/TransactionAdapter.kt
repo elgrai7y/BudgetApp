@@ -28,6 +28,8 @@ class TransactionAdapter(private val listener: OnItemClickListener) :
         holder.transType.text= transList[position].type.toString()
         holder.transDate.text= transList[position].date.toString()
         holder.transBalance.text= transList[position].amount.toString()
+        holder.transCategory.text= transList[position].category.toString()
+
         if( holder.transType.text=="EXPENSE"){
             holder.transType.setTextColor(Color.parseColor("#FF928A"))
             holder.transic.setImageResource(R.drawable.ic_expense)

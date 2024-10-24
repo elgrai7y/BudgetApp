@@ -5,113 +5,115 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
     android:background="@drawable/background"
     tools:context=".ui.AddCategoryFragment">
 
 
-        <ImageView
-            android:id="@+id/back_btn"
-            android:layout_width="43dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="24dp"
-            android:src="@drawable/back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="136dp"
-            android:layout_marginEnd="24dp"
-            android:gravity="center"
-            android:text="Add A New \nCategory"
-            android:textColor="#FFD700"
-            android:textSize="40sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout4"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="@+id/title"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="@+id/title"
-            app:layout_constraintTop_toBottomOf="@id/title">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-                <!-- Income Button -->
-                <Button
-                    android:id="@+id/edit_income_button"
-                    android:layout_width="170dp"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#5729662C"
-                    android:padding="10dp"
-                    android:text="Income"
-                    android:textColor="#6FFF74"
-                    android:textSize="23sp" />
+                <androidx.constraintlayout.widget.ConstraintLayout
 
-                <!-- Expense Button -->
-                <Button
-                    android:id="@+id/edit_expense_button"
-                    android:layout_width="170dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:backgroundTint="#4DAB3A3A"
-                    android:padding="10dp"
-                    android:text="Expense"
-                    android:textColor="#FDA09A"
-                    android:textSize="23sp" />
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/category_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/edittxt"
-            android:hint="Category Name"
-            android:inputType="text"
-            android:padding="12dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#A9A9A9"
-            app:layout_constraintEnd_toEndOf="@+id/title"
-            app:layout_constraintHorizontal_bias="0.458"
-            app:layout_constraintStart_toStartOf="@+id/title"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
-        <Button
-            android:id="@+id/add_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="128dp"
-            android:background="@drawable/rounded_button_background"
-            android:padding="12dp"
-            android:text="Add"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/title"
-            app:layout_constraintHorizontal_bias="0.536"
-            app:layout_constraintStart_toStartOf="@+id/title"
-            app:layout_constraintTop_toBottomOf="@+id/category_name"
-            app:layout_constraintVertical_bias="0.169" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                            android:id="@+id/back_btn"
+                            android:layout_width="43dp"
+                            android:layout_height="43dp"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="24dp"
+                            android:src="@drawable/back"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="136dp"
+                            android:layout_marginEnd="24dp"
+                            android:gravity="center"
+                            android:text="Add A New \nCategory"
+                            android:textColor="#FFD700"
+                            android:textSize="40sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="64dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="@+id/title"
+                            app:layout_constraintStart_toStartOf="@+id/title"
+                            app:layout_constraintTop_toBottomOf="@id/title">
+
+                                <Button
+                                    android:id="@+id/edit_income_button"
+                                    android:layout_width="170dp"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="#5729662C"
+                                    android:padding="10dp"
+                                    android:text="Income"
+                                    android:textColor="#6FFF74"
+                                    android:textSize="23sp" />
+
+                                <Button
+                                    android:id="@+id/edit_expense_button"
+                                    android:layout_width="170dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:backgroundTint="#4DAB3A3A"
+                                    android:padding="10dp"
+                                    android:text="Expense"
+                                    android:textColor="#FDA09A"
+                                    android:textSize="23sp" />
+                        </LinearLayout>
+
+                        <EditText
+                            android:id="@+id/category_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="32dp"
+                            android:layout_marginEnd="24dp"
+                            android:background="@drawable/edittxt"
+                            android:hint="Category Name"
+                            android:inputType="text"
+                            android:padding="12dp"
+                            android:textColor="#FFFFFF"
+                            android:textColorHint="#A9A9A9"
+                            app:layout_constraintEnd_toEndOf="@+id/title"
+                            app:layout_constraintStart_toStartOf="@+id/title"
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
+                        <Button
+                            android:id="@+id/add_button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="32dp"
+                            android:layout_marginEnd="24dp"
+                            android:layout_marginBottom="128dp"
+                            android:background="@drawable/rounded_button_background"
+                            android:padding="12dp"
+                            android:text="Add"
+                            android:textColor="#000000"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/title"
+                            app:layout_constraintStart_toStartOf="@+id/title"
+                            app:layout_constraintTop_toBottomOf="@+id/category_name" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
