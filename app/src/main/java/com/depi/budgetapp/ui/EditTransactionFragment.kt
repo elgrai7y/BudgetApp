@@ -1,8 +1,10 @@
 package com.depi.budgetapp.ui
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,35 +16,33 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.setupWithNavController
-import com.depi.budgetapp.R
-import com.depi.budgetapp.data.Transaction
-import com.depi.budgetapp.data.TransactionType
-import com.depi.budgetapp.util.formatDate
-import com.depi.budgetapp.util.parseDate
-import com.depi.budgetapp.viewmodels.TransactionViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.navigation.NavigationView
-import java.text.SimpleDateFormat
-import java.util.Date
-import com.depi.budgetapp.databinding.FragmentEditTransactionBinding
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.depi.budgetapp.R
 import com.depi.budgetapp.adapters.CategoryAdapter
 import com.depi.budgetapp.data.Category
+import com.depi.budgetapp.data.Transaction
+import com.depi.budgetapp.data.TransactionType
+import com.depi.budgetapp.databinding.FragmentEditTransactionBinding
 import com.depi.budgetapp.repo.AuthRepository
+import com.depi.budgetapp.util.formatDate
+import com.depi.budgetapp.util.parseDate
 import com.depi.budgetapp.viewmodels.AuthViewModel
 import com.depi.budgetapp.viewmodels.AuthViewModelFactory
 import com.depi.budgetapp.viewmodels.CategoryViewModel
+import com.depi.budgetapp.viewmodels.TransactionViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.navigation.NavigationView
+import java.util.Date
 import java.util.Locale
 
 
@@ -68,10 +68,6 @@ class EditTransactionFragment : Fragment(), OnCategoryClickListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentEditTransactionBinding.inflate(inflater, container, false)
-
-
-
-
         binding.toolbar.setNavigationOnClickListener {
             if (binding.drawable.isDrawerOpen(GravityCompat.START)) {
                 binding.drawable.closeDrawer(GravityCompat.START)
@@ -79,22 +75,12 @@ class EditTransactionFragment : Fragment(), OnCategoryClickListener {
                 binding.drawable.openDrawer(GravityCompat.START)
             }
         }
-
-
         toggle =
             ActionBarDrawerToggle(activity, binding.drawable, R.string.nav_open, R.string.nav_close)
         binding.drawable.addDrawerListener(toggle)
         toggle.syncState()
-
-
-
-
-
-
         drawerLayout = binding.drawable
-
         val navigationView: NavigationView = binding.navView
-
         val headerView = navigationView.getHeaderView(0)
         val headerButton: Button = headerView.findViewById(R.id.profile_nv)
         headerButton.setOnClickListener {
@@ -132,7 +118,7 @@ class EditTransactionFragment : Fragment(), OnCategoryClickListener {
         }
 
         val headerButton5: Button = headerView.findViewById(R.id.logout)
-        headerButton5.setOnClickListener{
+        headerButton5.setOnClickListener {
             authViewModel.signOut()
             findNavController().navigate(R.id.mainFragment)
         }
@@ -140,28 +126,49 @@ class EditTransactionFragment : Fragment(), OnCategoryClickListener {
         transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
 
 
-        return binding.root }
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
+
+        isincome =args.currentTransaction.isincome
+
+            if (isincome ==true) {
+                onClick(view, "income")
+            } else {
+                onClick(view, "expense")
+            }
+
+
 
         val clickListener = View.OnClickListener { view ->
 
             when (view.getId()) {
-                R.id.edit_income_button -> isincome = true
-                R.id.edit_expense_button -> isincome = false
+                R.id.edit_income_button -> {
+                    isincome = true
+
+                    onClick(view, "income")
+                }
+
+                R.id.edit_expense_button -> {
+                    isincome = false
+
+                    onClick(view, "expense")
+
+                }
             }
         }
         binding.editIncomeButton.setOnClickListener(clickListener)
         binding.editExpenseButton.setOnClickListener(clickListener)
+
         // Initialize views
         selectedDateText = view.findViewById(R.id.edit_selected_date_text)
         dollarIcon = view.findViewById(R.id.edit_dollar_icon)
         balanceEditText = view.findViewById(R.id.edit_balance_edit_text)
-
         // Setup EditText TextWatcher
         setupBalanceEditText()
-
         // Setup Date Picker Bottom Sheet
         view.findViewById<LinearLayout>(R.id.edit_date_picker_layout).setOnClickListener {
             showDatePickerBottomSheet()
@@ -172,7 +179,14 @@ class EditTransactionFragment : Fragment(), OnCategoryClickListener {
             showCategoryBottomSheet()
         }
 
-        binding.editBalanceEditText.text = Editable.Factory.getInstance().newEditable(args.currentTransaction.amount.toString())
+
+        binding.categoryName.text =
+            Editable.Factory.getInstance().newEditable(args.currentTransaction.category)
+        binding.editBalanceEditText.text =
+            Editable.Factory.getInstance().newEditable(args.currentTransaction.amount.toString())
+
+        /***********************/
+
 
         binding.editSelectedDateText.text = formatDate(args.currentTransaction.date)
 
@@ -181,7 +195,7 @@ class EditTransactionFragment : Fragment(), OnCategoryClickListener {
             editeAlart()
         })
         binding.deleteBtn.setOnClickListener(View.OnClickListener {
-          deleteAlart()
+            deleteAlart()
         })
         binding.backBtn.setOnClickListener(View.OnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -249,6 +263,7 @@ class EditTransactionFragment : Fragment(), OnCategoryClickListener {
         binding.categoryName.text = category.categoryname
         bottomSheetDialog.dismiss()
     }
+
     private fun editeAlart() {
 
         val builder = AlertDialog.Builder(requireContext())
@@ -265,9 +280,12 @@ class EditTransactionFragment : Fragment(), OnCategoryClickListener {
         builder.setPositiveButton("Yes") {
 
 
-                dialog, which -> dialog.dismiss()
+                dialog, which ->
+            dialog.dismiss()
+                edite()
 
-            edite()
+
+
             requireActivity().onBackPressedDispatcher.onBackPressed()
 
         }
@@ -275,7 +293,8 @@ class EditTransactionFragment : Fragment(), OnCategoryClickListener {
         // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
         builder.setNegativeButton("No") {
             // If user click no then dialog box is canceled.
-                dialog, which -> dialog.cancel()
+                dialog, which ->
+            dialog.cancel()
         }
 
         // Create the Alert dialog
@@ -300,12 +319,20 @@ class EditTransactionFragment : Fragment(), OnCategoryClickListener {
         builder.setPositiveButton("Yes") {
 
 
-                dialog, which -> dialog.dismiss()
-            val amount:Double = binding.editBalanceEditText.text.toString().toDouble()
-            val date:Date = parseDate(binding.editSelectedDateText.text.toString())
-            val category=binding.categoryName.text.toString()
-            val currentTransaction = Transaction(amount = amount, date = date, category = category, type = args.currentTransaction.type, id = args.currentTransaction.id)
-             transvm.delete(currentTransaction)
+                dialog, which ->
+            dialog.dismiss()
+            val amount: Double = binding.editBalanceEditText.text.toString().toDouble()
+            val date: Date = parseDate(binding.editSelectedDateText.text.toString())
+            val category = binding.categoryName.text.toString()
+            val currentTransaction = Transaction(
+                amount = amount,
+                date = date,
+                category = category,
+                type = args.currentTransaction.type,
+                id = args.currentTransaction.id,
+                isincome = args.currentTransaction.isincome
+            )
+            transvm.delete(currentTransaction)
             requireActivity().onBackPressedDispatcher.onBackPressed()
 
         }
@@ -313,7 +340,8 @@ class EditTransactionFragment : Fragment(), OnCategoryClickListener {
         // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
         builder.setNegativeButton("No") {
             // If user click no then dialog box is canceled.
-                dialog, which -> dialog.cancel()
+                dialog, which ->
+            dialog.cancel()
         }
 
         // Create the Alert dialog
@@ -324,50 +352,65 @@ class EditTransactionFragment : Fragment(), OnCategoryClickListener {
 
 
     private fun edite() {
-
         val transBalance = binding.editBalanceEditText.text.toString().toDoubleOrNull()
         val transCategory = binding.categoryName.text.toString()
         val selectedDateString = binding.editSelectedDateText.text.toString()
 
         val transDate: Date =
-            android.icu.text.SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(selectedDateString)
+            SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(selectedDateString)
 
 
 
-        if (transBalance != null && transDate != null && isincome == true&&transCategory!=null) {
+        if (transBalance != null && transDate != null&& isincome==true ) {
             val transaction = Transaction(
-                args.currentTransaction.id,
+                id = args.currentTransaction.id,
                 TransactionType.INCOME,
                 transCategory,
                 transBalance,
-                transDate
+                transDate,
+                true
             )
 
+            Toast.makeText(requireActivity(), "$transBalance", Toast.LENGTH_SHORT).show()
 
             transvm.update(transaction)
-            requireActivity().onBackPressedDispatcher.onBackPressed()
 
         }
-        else if (transBalance != null && transDate != null && isincome == false&&transCategory!=null) {
+        else if (transBalance != null && transDate != null&&isincome==false) {
             val transaction = Transaction(
-                args.currentTransaction.id,
+                id = args.currentTransaction.id,
                 TransactionType.EXPENSE,
                 transCategory,
                 transBalance,
-                transDate
+                transDate,
+                false
             )
+            Toast.makeText(requireActivity(), "$transBalance", Toast.LENGTH_SHORT).show()
 
             transvm.update(transaction)
-            requireActivity().onBackPressedDispatcher.onBackPressed()
 
-        }
-
-        else {
-            Toast.makeText(requireActivity(), "complete info please ${isincome}", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireActivity(), "complete info please", Toast.LENGTH_SHORT).show()
 
         }
     }
 
+
+    @Override
+    fun onClick(v: View?, s: String) {
+        // Change button background color on click
+        if (s == "income") {
+            binding.editIncomeButton.setBackgroundColor(android.graphics.Color.parseColor("#FDCB08"))
+            binding.editIncomeButton.setTextColor((android.graphics.Color.parseColor("#FF000000")))
+            binding.editExpenseButton.setBackgroundColor(android.graphics.Color.parseColor("#4DAB3A3A"))
+            binding.editExpenseButton.setTextColor((android.graphics.Color.parseColor("#FDA09A")))
+        } else {
+            binding.editExpenseButton.setBackgroundColor(android.graphics.Color.parseColor("#FDCB08"))
+            binding.editExpenseButton.setTextColor((android.graphics.Color.parseColor("#FF000000")))
+            binding.editIncomeButton.setBackgroundColor(android.graphics.Color.parseColor("#5729662C"))
+            binding.editIncomeButton.setTextColor((android.graphics.Color.parseColor("#6FFF74")))
+        }
+    }
 
 
 }

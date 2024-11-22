@@ -16,6 +16,7 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
     private var repository: TransactionRepository
 
     lateinit var balance:LiveData<Double>
+    var isincome: Boolean? = null
 
 
     //    private var _allTransactions: MutableLiveData<List<Transaction>> =  MutableLiveData<List<Transaction>>()

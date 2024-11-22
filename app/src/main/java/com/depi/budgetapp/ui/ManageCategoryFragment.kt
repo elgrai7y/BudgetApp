@@ -125,6 +125,7 @@ class ManageCategoryFragment : Fragment(), OnCategoryClickListener {
 
 
 
+        onClick(view,"income")
 
         val adapter= CategoryAdapter(this)
         val recyclerview=binding.transRv
@@ -138,6 +139,8 @@ class ManageCategoryFragment : Fragment(), OnCategoryClickListener {
 
 
         binding.editIncomeButton.setOnClickListener(View.OnClickListener {
+            onClick(view,"income")
+
             val adapter= CategoryAdapter(this)
             val recyclerview=binding.transRv
             recyclerview.adapter=adapter
@@ -148,6 +151,8 @@ class ManageCategoryFragment : Fragment(), OnCategoryClickListener {
             })
         })
         binding.editExpenseButton .setOnClickListener(View.OnClickListener {
+            onClick(view,"expense")
+
             val adapter= CategoryAdapter(this)
             val recyclerview=binding.transRv
             recyclerview.adapter=adapter
@@ -166,6 +171,21 @@ class ManageCategoryFragment : Fragment(), OnCategoryClickListener {
         TODO("Not yet implemented")
     }
 
-
+    @Override
+    fun onClick(v: View?,s:String) {
+        // Change button background color on click
+        if(s=="income") {
+            binding.editIncomeButton.setBackgroundColor(android.graphics.Color.parseColor("#FDCB08"))
+            binding.editIncomeButton.setTextColor((android.graphics.Color.parseColor("#FF000000")))
+            binding.editExpenseButton.setBackgroundColor(android.graphics.Color.parseColor("#4DAB3A3A"))
+            binding.editExpenseButton.setTextColor((android.graphics.Color.parseColor("#FDA09A")))
+        }
+        else{
+            binding.editExpenseButton.setBackgroundColor(android.graphics.Color.parseColor("#FDCB08"))
+            binding.editExpenseButton.setTextColor((android.graphics.Color.parseColor("#FF000000")))
+            binding.editIncomeButton.setBackgroundColor(android.graphics.Color.parseColor("#5729662C"))
+            binding.editIncomeButton.setTextColor((android.graphics.Color.parseColor("#6FFF74")))
+        }
+    }
 
 }

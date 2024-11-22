@@ -7,23 +7,20 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.depi.budgetapp.R
-import com.depi.budgetapp.databinding.FragmentHomeBinding
-import com.google.android.material.navigation.NavigationView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.depi.budgetapp.R
 import com.depi.budgetapp.adapters.TransactionAdapter
 import com.depi.budgetapp.data.Transaction
+import com.depi.budgetapp.databinding.FragmentHomeBinding
 import com.depi.budgetapp.repo.AuthRepository
 import com.depi.budgetapp.util.UserPreferences
 import com.depi.budgetapp.viewmodels.AuthViewModel
@@ -35,10 +32,10 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import kotlinx.coroutines.flow.collect
+import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.launch
 
-class HomeFragment : Fragment(),OnItemClickListener   {
+class HomeFragment : Fragment(), OnItemClickListener {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
@@ -46,6 +43,8 @@ class HomeFragment : Fragment(),OnItemClickListener   {
     private lateinit var userPreferences: UserPreferences
     private var pos = 0.0
     private var neg = 0.0
+    private var numofIncome = 0
+    private var numOfExpense = 0
     private var userBalance: Double = 0.0
 
     private lateinit var authRepository: AuthRepository
@@ -60,9 +59,7 @@ class HomeFragment : Fragment(),OnItemClickListener   {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-
         transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
-
         binding.toolbar.setNavigationOnClickListener {
             if (binding.drawable.isDrawerOpen(GravityCompat.START)) {
                 binding.drawable.closeDrawer(GravityCompat.START)
@@ -70,8 +67,6 @@ class HomeFragment : Fragment(),OnItemClickListener   {
                 binding.drawable.openDrawer(GravityCompat.START)
             }
         }
-
-
         toggle =
             ActionBarDrawerToggle(activity, binding.drawable, R.string.nav_open, R.string.nav_close)
         binding.drawable.addDrawerListener(toggle)
@@ -122,7 +117,7 @@ class HomeFragment : Fragment(),OnItemClickListener   {
         }
 
         val headerButton5: Button = headerView.findViewById(R.id.logout)
-        headerButton5.setOnClickListener{
+        headerButton5.setOnClickListener {
             authViewModel.signOut()
             findNavController().navigate(R.id.mainFragment)
         }
@@ -204,22 +199,24 @@ class HomeFragment : Fragment(),OnItemClickListener   {
         lineChart.setBackgroundColor(Color.BLACK)  // Background color
         lineChart.setDrawGridBackground(false)  // No grid background
         lineChart.description.isEnabled = false  // Disable the description label
-        lineChart.legend.textColor= Color.WHITE
+        lineChart.legend.textColor = Color.WHITE
 
-        lineChart.legend.orientation = Legend.LegendOrientation.HORIZONTAL  // Set the legend orientation
-        lineChart.legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM  // Position at the bottom
+        lineChart.legend.orientation =
+            Legend.LegendOrientation.HORIZONTAL  // Set the legend orientation
+        lineChart.legend.verticalAlignment =
+            Legend.LegendVerticalAlignment.BOTTOM  // Position at the bottom
         lineChart.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
         lineChart.legend.form = Legend.LegendForm.CIRCLE  // Choose the line form for the legend
         lineChart.invalidate()
 
 
-        val adapter=TransactionAdapter(this)
-        val recyclerview=binding.transRv
-        recyclerview.adapter=adapter
-        recyclerview.layoutManager=LinearLayoutManager(requireContext())
+        val adapter = TransactionAdapter(this)
+        val recyclerview = binding.transRv
+        recyclerview.adapter = adapter
+        recyclerview.layoutManager = LinearLayoutManager(requireContext())
         transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
-        transvm.allTransactions.observe(viewLifecycleOwner, Observer {
-                trans->adapter.setData(trans)
+        transvm.allTransactions.observe(viewLifecycleOwner, Observer { trans ->
+            adapter.setData(trans)
         })
 
 
@@ -230,28 +227,30 @@ class HomeFragment : Fragment(),OnItemClickListener   {
         userPreferences = UserPreferences.getInstance(requireContext())
 
         transvm.getTotalIncomeAmount().observe(viewLifecycleOwner) {
-            pos=it?: 0.0
-            this.userBalance +=it.toString().toDouble()
+            pos = it ?: 0.0
+            this.userBalance += pos.toString().toDouble()
+
             lifecycleScope.launch {
-                userPreferences.balance.collect {
-                        balance ->userBalance
+                userPreferences.balance.collect { balance ->
+                    userBalance
                     binding.walletBalance.text = userBalance.toString()
                 }
             }
         }
         transvm.getTotalExpenseAmount().observe(viewLifecycleOwner) {
-            neg=it?: 0.0
-            this.userBalance -=it.toString().toDouble()
+            neg = it ?: 0.0
+            this.userBalance -= neg.toString().toDouble()
+            // this.userBalance -= it.toString().toDouble()
             lifecycleScope.launch {
-                userPreferences.balance.collect {
-                        balance ->userBalance
+                userPreferences.balance.collect { balance ->
+                    userBalance
                     binding.walletBalance.text = userBalance.toString()
                 }
             }
         }
 
         lifecycleScope.launch {
-            userPreferences.walletName.collect{walletName->
+            userPreferences.walletName.collect { walletName ->
                 binding.walletNameTv.text = walletName
             }
         }
@@ -265,17 +264,18 @@ class HomeFragment : Fragment(),OnItemClickListener   {
 
         return binding.root
     }
+
     override fun onItemClick(transaction: Transaction) {
         val action = HomeFragmentDirections.actionHomeFragmentToEditTransactionFragment(transaction)
         findNavController().navigate(action)
 
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (toggle.onOptionsItemSelected(item)) {
             true
         } else super.onOptionsItemSelected(item)
     }
-
 
 
 }

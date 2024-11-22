@@ -15,7 +15,9 @@ data class Transaction(
     val type: TransactionType,
     val category: String,
     val amount: Double,
-    val date:Date
+    val date:Date,
+    val isincome:Boolean
+
 ): Parcelable {
 
     init {

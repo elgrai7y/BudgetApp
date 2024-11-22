@@ -58,37 +58,43 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-4dp"
                         android:layout_marginBottom="8dp"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="24dp"
                         android:gravity="center"
+                        android:layout_marginStart="24dp"
                         android:orientation="horizontal">
 
+                        <!-- Income Button -->
                         <Button
                             android:id="@+id/edit_income_button"
-                            android:layout_width="170dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="#5729662C"
+                            android:layout_weight="1"
+                            android:background="#5729662C"
                             android:padding="10dp"
                             android:text="Income"
                             android:textColor="#6FFF74"
                             android:textSize="23sp" />
 
+                        <!-- Expense Button -->
                         <Button
                             android:id="@+id/edit_expense_button"
-                            android:layout_width="170dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:backgroundTint="#4DAB3A3A"
+                            android:layout_weight="1"
+                            android:background="#4DAB3A3A"
                             android:padding="10dp"
+                            android:layout_marginEnd="24dp"
                             android:text="Expense"
                             android:textColor="#FDA09A"
                             android:textSize="23sp" />
                     </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -265,9 +271,6 @@
                             android:layout_marginBottom="16dp"
                             android:backgroundTint="@color/red"
                             android:drawableEnd="@drawable/remove_icon"
-                            android:drawablePadding="8dp"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
                             android:gravity="center"
                             android:text="Delete Transaction"
                             android:textColor="#000"

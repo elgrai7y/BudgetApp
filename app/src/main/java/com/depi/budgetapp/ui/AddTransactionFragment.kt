@@ -14,18 +14,20 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.compose.ui.graphics.Color
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.depi.budgetapp.R
 import com.depi.budgetapp.adapters.CategoryAdapter
+import com.depi.budgetapp.adapters.TransactionAdapter
 import com.depi.budgetapp.data.Category
 import com.depi.budgetapp.data.Transaction
 import com.depi.budgetapp.data.TransactionType
@@ -35,9 +37,9 @@ import com.depi.budgetapp.viewmodels.AuthViewModel
 import com.depi.budgetapp.viewmodels.AuthViewModelFactory
 import com.depi.budgetapp.viewmodels.CategoryViewModel
 import com.depi.budgetapp.viewmodels.TransactionViewModel
-import com.depi.budgetapp.viewmodels.TransactionViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.Locale
 
@@ -55,7 +57,8 @@ class AddTransactionFragment : Fragment(), OnCategoryClickListener {
     private lateinit var selectedDateText: TextView
     private lateinit var balanceEditText: EditText
     private lateinit var transvm: TransactionViewModel
-    private var isincome: Boolean? = null
+    private var isSelected: Boolean? = null
+
     private lateinit var transvm2: CategoryViewModel
 
     private lateinit var authRepository: AuthRepository
@@ -70,11 +73,22 @@ class AddTransactionFragment : Fragment(), OnCategoryClickListener {
     ): View {
         binding = FragmentAddTransactionBinding.inflate(inflater, container, false)
 
+        transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
+
         val clickListener = View.OnClickListener { view ->
 
             when (view.getId()) {
-                R.id.edit_income_button -> isincome = true
-                R.id.edit_expense_button -> isincome = false
+                R.id.edit_income_button -> {
+                    transvm.isincome=true
+
+                    onClick(view,"income")
+                }
+                R.id.edit_expense_button -> {
+                    transvm.isincome=false
+
+                    onClick(view,"expense")
+
+                }
             }
         }
 
@@ -84,7 +98,6 @@ class AddTransactionFragment : Fragment(), OnCategoryClickListener {
 
         //************************************
 
-        transvm = ViewModelProvider(this).get(TransactionViewModel::class.java)
         binding.addBtn.setOnClickListener(View.OnClickListener {
             insertData()
         })
@@ -161,13 +174,14 @@ class AddTransactionFragment : Fragment(), OnCategoryClickListener {
 
 
 
-        if (transBalance != null && transDate != null && isincome == true&&transCategory!=null) {
+        if (transBalance != null && transDate != null &&  transvm.isincome == true&&isSelected==true) {
             val transaction = Transaction(
                 0,
                 TransactionType.INCOME,
                 transCategory,
                 transBalance,
-                transDate
+                transDate,
+                true
             )
 
             Toast.makeText(requireActivity(), "$transBalance", Toast.LENGTH_SHORT).show()
@@ -176,13 +190,14 @@ class AddTransactionFragment : Fragment(), OnCategoryClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
 
         }
-      else if (transBalance != null && transDate != null && isincome == false&&transCategory!=null) {
+      else if (transBalance != null && transDate != null &&  transvm.isincome == false&&isSelected==true) {
             val transaction = Transaction(
                 0,
                 TransactionType.EXPENSE,
                 transCategory,
                 transBalance,
-                transDate
+                transDate,
+                false
             )
             Toast.makeText(requireActivity(), "$transBalance", Toast.LENGTH_SHORT).show()
 
@@ -275,6 +290,7 @@ class AddTransactionFragment : Fragment(), OnCategoryClickListener {
         transvm2 = ViewModelProvider(this).get(CategoryViewModel::class.java)
         transvm2.allCategories.observe(viewLifecycleOwner, Observer { cate ->
             adapter.setData(cate)
+            isSelected=true
         })
 
         bottomSheetDialog.setContentView(sheetView)
@@ -286,5 +302,22 @@ class AddTransactionFragment : Fragment(), OnCategoryClickListener {
         binding.categoryName.text = category.categoryname
         bottomSheetDialog.dismiss()
     }
+    @Override
+    fun onClick(v: View?,s:String) {
+        // Change button background color on click
+        if(s=="income") {
+            binding.editIncomeButton.setBackgroundColor(android.graphics.Color.parseColor("#FDCB08"))
+            binding.editIncomeButton.setTextColor((android.graphics.Color.parseColor("#FF000000")))
+            binding.editExpenseButton.setBackgroundColor(android.graphics.Color.parseColor("#4DAB3A3A"))
+            binding.editExpenseButton.setTextColor((android.graphics.Color.parseColor("#FDA09A")))
+        }
+        else{
+            binding.editExpenseButton.setBackgroundColor(android.graphics.Color.parseColor("#FDCB08"))
+            binding.editExpenseButton.setTextColor((android.graphics.Color.parseColor("#FF000000")))
+            binding.editIncomeButton.setBackgroundColor(android.graphics.Color.parseColor("#5729662C"))
+            binding.editIncomeButton.setTextColor((android.graphics.Color.parseColor("#6FFF74")))
+        }
+    }
 
 }
+

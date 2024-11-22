@@ -28,7 +28,8 @@ class TransactionAdapter(private val listener: OnItemClickListener) :
         holder.transType.text= transList[position].type.toString()
         holder.transDate.text= transList[position].date.toString()
         holder.transBalance.text= transList[position].amount.toString()
-        holder.transCategory.text= transList[position].category.toString()
+        holder.transCategory.text= transList[position].category
+
 
         if( holder.transType.text=="EXPENSE"){
             holder.transType.setTextColor(Color.parseColor("#FF928A"))
@@ -51,12 +52,9 @@ class TransactionAdapter(private val listener: OnItemClickListener) :
 
 class TransactionViewHolder(itemView: TransactionItemBinding):RecyclerView.ViewHolder(itemView.root)
 {
-val transType=itemView.transactionType
+    val transType=itemView.transactionType
     val transDate=itemView.transactionDate
     val transCategory=itemView.transactionCategory
     val transBalance=itemView.transactionAmount
     val transic=itemView.icType
-
-
-
 }

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.depi.budgetapp.R
@@ -137,27 +138,30 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.mainFragment)
         }
 
+        transvm.getTotalIncomeAmount().observe(viewLifecycleOwner) {
+            pos = it ?: 0.0
+            this.userBalance += pos.toString().toDouble()
 
-    transvm.getTotalIncomeAmount().observe(viewLifecycleOwner) {
-        pos = it ?: 0.0
-        this.userBalance += it.toString().toDouble()
-        lifecycleScope.launch {
-            userPreferences.balance.collect { balance ->
-                userBalance
-                binding.walletBalance.text = userBalance.toString()
+            lifecycleScope.launch {
+                userPreferences.balance.collect { balance ->
+                    userBalance
+                    binding.walletBalance.text = userBalance.toString()
+                }
             }
         }
-    }
-    transvm.getTotalExpenseAmount().observe(viewLifecycleOwner) {
-        neg = it ?: 0.0
-        this.userBalance -= it.toString().toDouble()
-        lifecycleScope.launch {
-            userPreferences.balance.collect { balance ->
-                userBalance
-                binding.walletBalance.text = userBalance.toString()
+        transvm.getTotalExpenseAmount().observe(viewLifecycleOwner) {
+            neg = it ?: 0.0
+                this.userBalance -= neg.toString().toDouble()
+            // this.userBalance -= it.toString().toDouble()
+            lifecycleScope.launch {
+                userPreferences.balance.collect { balance ->
+                    userBalance
+                    binding.walletBalance.text = userBalance.toString()
+                }
             }
         }
-    }
+
+
 
 
         lifecycleScope.launch {

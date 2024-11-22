@@ -32,15 +32,22 @@ class AddCategoryFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         })
 
+
         val clickListener = View.OnClickListener { view ->
 
             when (view.getId()) {
                 R.id.edit_income_button -> {
                     isincome = true
+                    onClick(view,"income")
                 }
-                R.id.edit_expense_button -> isincome = false
+                R.id.edit_expense_button -> {
+                    isincome = false
+                    onClick(view,"expense")
+
+                }
             }
         }
+
 
         binding.editIncomeButton.setOnClickListener(clickListener)
         binding.editExpenseButton.setOnClickListener(clickListener)
@@ -62,7 +69,7 @@ class AddCategoryFragment : Fragment() {
 
 
 
-        if (transCategory != null &&  isincome == true) {
+        if (!transCategory.toString().isEmpty() &&  isincome == true) {
             val category = Category(
                 0,
                 TransactionType.INCOME,
@@ -75,7 +82,7 @@ class AddCategoryFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
 
         }
-        else if(transCategory != null  && isincome == false) {
+        else if(!transCategory.toString().isEmpty()  && isincome == false) {
             val category = Category(
                 0,
                 TransactionType.EXPENSE,
@@ -90,6 +97,23 @@ class AddCategoryFragment : Fragment() {
         }
         else Toast.makeText(requireActivity(), "complete info please", Toast.LENGTH_SHORT).show()
 
+    }
+
+    @Override
+    fun onClick(v: View?,s:String) {
+        // Change button background color on click
+        if(s=="income") {
+            binding.editIncomeButton.setBackgroundColor(android.graphics.Color.parseColor("#FDCB08"))
+            binding.editIncomeButton.setTextColor((android.graphics.Color.parseColor("#FF000000")))
+            binding.editExpenseButton.setBackgroundColor(android.graphics.Color.parseColor("#4DAB3A3A"))
+            binding.editExpenseButton.setTextColor((android.graphics.Color.parseColor("#FDA09A")))
+        }
+        else{
+            binding.editExpenseButton.setBackgroundColor(android.graphics.Color.parseColor("#FDCB08"))
+            binding.editExpenseButton.setTextColor((android.graphics.Color.parseColor("#FF000000")))
+            binding.editIncomeButton.setBackgroundColor(android.graphics.Color.parseColor("#5729662C"))
+            binding.editIncomeButton.setTextColor((android.graphics.Color.parseColor("#6FFF74")))
+        }
     }
 
 }
